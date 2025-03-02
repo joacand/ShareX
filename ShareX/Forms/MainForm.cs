@@ -862,9 +862,6 @@ namespace ShareX
 
             tsmiTweetMessage.Image = TaskHelpers.FindMenuIcon(HotkeyType.TweetMessage);
             tsmiTrayTweetMessage.Image = TaskHelpers.FindMenuIcon(HotkeyType.TweetMessage);
-            tsbX.Image = TaskHelpers.FindMenuIcon(HotkeyType.TweetMessage);
-
-            tsbDiscord.Image = ShareXResources.IsDarkTheme ? Resources.Discord_white : Resources.Discord_black;
 
             tsmiQRCode.Image = TaskHelpers.FindMenuIcon(HotkeyType.QRCode);
             tsmiTrayQRCode.Image = TaskHelpers.FindMenuIcon(HotkeyType.QRCode);
