@@ -58,7 +58,6 @@ namespace ShareX
 
                             if (x == TextDestination.CustomTextUploader)
                             {
-                                overrideText = GetCustomUploaderName(Program.UploadersConfig.CustomTextUploaderSelected, info.TaskSettings);
                             }
 
                             AddDestination<TextDestination>((int)x, EDataType.Text, info.TaskSettings, overrideText);
@@ -71,7 +70,6 @@ namespace ShareX
 
                         if (x == FileDestination.CustomFileUploader)
                         {
-                            overrideText = GetCustomUploaderName(Program.UploadersConfig.CustomFileUploaderSelected, info.TaskSettings);
                         }
 
                         AddDestination<FileDestination>((int)x, EDataType.Text, info.TaskSettings, overrideText);
@@ -96,7 +94,6 @@ namespace ShareX
 
                         if (x == FileDestination.CustomFileUploader)
                         {
-                            overrideText = GetCustomUploaderName(Program.UploadersConfig.CustomFileUploaderSelected, info.TaskSettings);
                         }
 
                         AddDestination<FileDestination>((int)x, EDataType.File, info.TaskSettings, overrideText);
@@ -114,7 +111,6 @@ namespace ShareX
 
                         if (x == UrlShortenerType.CustomURLShortener)
                         {
-                            overrideText = GetCustomUploaderName(Program.UploadersConfig.CustomURLShortenerSelected, info.TaskSettings);
                         }
 
                         AddDestination<UrlShortenerType>((int)x, EDataType.URL, info.TaskSettings, overrideText);
@@ -141,7 +137,6 @@ namespace ShareX
 
                     if (x == ImageDestination.CustomImageUploader)
                     {
-                        overrideText = GetCustomUploaderName(Program.UploadersConfig.CustomImageUploaderSelected, taskSettings);
                     }
 
                     AddDestination<ImageDestination>((int)x, EDataType.Image, taskSettings, overrideText);
@@ -154,7 +149,6 @@ namespace ShareX
 
                 if (x == FileDestination.CustomFileUploader)
                 {
-                    overrideText = GetCustomUploaderName(Program.UploadersConfig.CustomFileUploaderSelected, taskSettings);
                 }
 
                 AddDestination<FileDestination>((int)x, EDataType.File, taskSettings, overrideText);
@@ -189,19 +183,6 @@ namespace ShareX
 
         private void AddDestination<T>(int index, EDataType dataType, TaskSettings taskSettings, string overrideText = null)
         {
-            Enum destination = (Enum)Enum.ToObject(typeof(T), index);
-
-            if (UploadersConfigValidator.Validate<T>(index, Program.UploadersConfig))
-            {
-                RadioButton rb = new RadioButton() { AutoSize = true };
-
-                rb.Text = string.IsNullOrEmpty(overrideText) ? destination.GetLocalizedDescription() :
-                    string.Format("{0} [{1}]", Resources.BeforeUploadControl_AddDestination_Custom, overrideText);
-                rb.Tag = destination;
-                rb.CheckedChanged += (sender, e) => SetDestinations(rb.Checked, dataType, rb.Tag, taskSettings);
-
-                flp.Controls.Add(rb);
-            }
         }
 
         private void SetDestinations(bool isActive, EDataType dataType, object destination, TaskSettings taskSettings)
@@ -251,18 +232,6 @@ namespace ShareX
 
         private string GetCustomUploaderName(int index, TaskSettings taskSettings)
         {
-            if (taskSettings.OverrideCustomUploader)
-            {
-                index = taskSettings.CustomUploaderIndex.BetweenOrDefault(0, Program.UploadersConfig.CustomUploadersList.Count - 1);
-            }
-
-            CustomUploaderItem cui = Program.UploadersConfig.CustomUploadersList.ReturnIfValidIndex(index);
-
-            if (cui != null)
-            {
-                return cui.ToString();
-            }
-
             return null;
         }
     }

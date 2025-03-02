@@ -43,9 +43,7 @@ namespace ShareX.UploadersLib
 
         public virtual Image ServiceImage { get; }
 
-        public abstract bool CheckConfig(UploadersConfig config);
-
-        public virtual TabPage GetUploadersConfigTabPage(UploadersConfigForm form)
+        public virtual TabPage GetUploadersConfigTabPage(object form)
         {
             return null;
         }

@@ -123,7 +123,7 @@ namespace ShareX
 
         internal static ApplicationConfig Settings { get; set; }
         internal static TaskSettings DefaultTaskSettings { get; set; }
-        internal static UploadersConfig UploadersConfig { get; set; }
+        internal static object UploadersConfig { get; set; }
         internal static HotkeysConfig HotkeysConfig { get; set; }
 
         internal static MainForm MainForm { get; private set; }

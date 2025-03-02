@@ -38,8 +38,6 @@ namespace ShareX.UploadersLib
 
         Image ServiceImage { get; }
 
-        bool CheckConfig(UploadersConfig config);
-
-        TabPage GetUploadersConfigTabPage(UploadersConfigForm form);
+        TabPage GetUploadersConfigTabPage(object form);
     }
 }

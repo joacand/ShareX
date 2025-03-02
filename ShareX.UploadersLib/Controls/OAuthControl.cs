@@ -62,9 +62,9 @@ namespace ShareX.UploadersLib
             }
         }
 
-        private OAuthUserInfo userInfo;
+        private object userInfo;
 
-        public OAuthUserInfo UserInfo
+        public object UserInfo
         {
             get
             {
@@ -150,31 +150,6 @@ namespace ShareX.UploadersLib
 
         private void UpdateStatusLabel()
         {
-            switch (Status)
-            {
-                case OAuthLoginStatus.LoginRequired:
-                    lblStatusValue.Text = Resources.OAuthControl_Status_NotLoggedIn;
-                    lblStatusValue.ForeColor = Color.FromArgb(200, 0, 0);
-                    break;
-                case OAuthLoginStatus.LoginSuccessful:
-                    if (UserInfo != null && !string.IsNullOrEmpty(UserInfo.name))
-                    {
-                        lblStatusValue.Text = string.Format(Resources.LoggedInAs0, UserInfo.name);
-                    }
-                    else
-                    {
-                        lblStatusValue.Text = Resources.OAuthControl_Status_LoggedIn;
-                    }
-                    lblStatusValue.ForeColor = Color.FromArgb(0, 160, 0);
-                    break;
-                case OAuthLoginStatus.LoginFailed:
-                    lblStatusValue.Text = Resources.OAuthControl_Status_LoginFailed;
-                    lblStatusValue.ForeColor = Color.FromArgb(200, 0, 0);
-                    break;
-            }
-
-            txtVerificationCode.ResetText();
-            btnClearAuthorization.Enabled = btnRefreshAuthorization.Enabled = Status == OAuthLoginStatus.LoginSuccessful;
         }
     }
 }

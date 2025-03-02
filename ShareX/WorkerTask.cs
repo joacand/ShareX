@@ -458,81 +458,7 @@ namespace ShareX
 
         private bool DoUpload(Stream data, string fileName, int retry = 0)
         {
-            bool isError = false;
-
-            if (retry > 0)
-            {
-                if (Program.Settings.UseSecondaryUploaders)
-                {
-                    Info.TaskSettings.ImageDestination = Program.Settings.SecondaryImageUploaders[retry - 1];
-                    Info.TaskSettings.ImageFileDestination = Program.Settings.SecondaryFileUploaders[retry - 1];
-                    Info.TaskSettings.TextDestination = Program.Settings.SecondaryTextUploaders[retry - 1];
-                    Info.TaskSettings.TextFileDestination = Program.Settings.SecondaryFileUploaders[retry - 1];
-                    Info.TaskSettings.FileDestination = Program.Settings.SecondaryFileUploaders[retry - 1];
-                }
-                else
-                {
-                    Thread.Sleep(1000);
-                }
-            }
-
-            SSLBypassHelper sslBypassHelper = null;
-
-            try
-            {
-                if (HelpersOptions.AcceptInvalidSSLCertificates)
-                {
-                    sslBypassHelper = new SSLBypassHelper();
-                }
-
-                if (!CheckUploadFilters(data, fileName))
-                {
-                    switch (Info.UploadDestination)
-                    {
-                        case EDataType.Image:
-                            Info.Result = UploadImage(data, fileName);
-                            break;
-                        case EDataType.Text:
-                            Info.Result = UploadText(data, fileName);
-                            break;
-                        case EDataType.File:
-                            Info.Result = UploadFile(data, fileName);
-                            break;
-                    }
-                }
-
-                StopRequested |= taskReferenceHelper.StopRequested;
-            }
-            catch (Exception e)
-            {
-                if (!StopRequested)
-                {
-                    DebugHelper.WriteException(e);
-                    isError = true;
-                    AddErrorMessage(e.ToString());
-                }
-            }
-            finally
-            {
-                if (sslBypassHelper != null)
-                {
-                    sslBypassHelper.Dispose();
-                }
-
-                if (Info.Result == null)
-                {
-                    Info.Result = new UploadResult();
-                }
-
-                if (uploader != null)
-                {
-                    AddErrorMessage(uploader.Errors);
-                }
-
-                isError |= Info.Result.IsError;
-            }
-
-            return isError;
+            return true;
         }
 
         private void AddErrorMessage(UploaderErrorManager errors)
@@ -841,83 +767,6 @@ namespace ShareX
         {
             try
             {
-                if (Info.TaskSettings.UploadSettings.URLRegexReplace)
-                {
-                    Info.Result.URL = Regex.Replace(Info.Result.URL, Info.TaskSettings.UploadSettings.URLRegexReplacePattern,
-                        Info.TaskSettings.UploadSettings.URLRegexReplaceReplacement);
-                }
-
-                if (Info.TaskSettings.AdvancedSettings.ResultForceHTTPS)
-                {
-                    Info.Result.ForceHTTPS();
-                }
-
-                if (Info.Job != TaskJob.ShareURL && (Info.TaskSettings.AfterUploadJob.HasFlag(AfterUploadTasks.UseURLShortener) || Info.Job == TaskJob.ShortenURL ||
-                    (Info.TaskSettings.AdvancedSettings.AutoShortenURLLength > 0 && Info.Result.URL.Length > Info.TaskSettings.AdvancedSettings.AutoShortenURLLength)))
-                {
-                    UploadResult result = ShortenURL(Info.Result.URL);
-
-                    if (result != null)
-                    {
-                        Info.Result.ShortenedURL = result.ShortenedURL;
-                        Info.Result.Errors.Add(result.Errors);
-                    }
-                }
-
-                if (Info.Job != TaskJob.ShortenURL && (Info.TaskSettings.AfterUploadJob.HasFlag(AfterUploadTasks.ShareURL) || Info.Job == TaskJob.ShareURL))
-                {
-                    UploadResult result = ShareURL(Info.Result.ToString());
-
-                    if (result != null)
-                    {
-                        Info.Result.Errors.Add(result.Errors);
-                    }
-
-                    if (Info.Job == TaskJob.ShareURL)
-                    {
-                        Info.Result.IsURLExpected = false;
-                    }
-                }
-
-                if (Info.TaskSettings.AfterUploadJob.HasFlag(AfterUploadTasks.CopyURLToClipboard))
-                {
-                    string txt;
-
-                    if (!string.IsNullOrEmpty(Info.TaskSettings.AdvancedSettings.ClipboardContentFormat))
-                    {
-                        txt = new UploadInfoParser().Parse(Info, Info.TaskSettings.AdvancedSettings.ClipboardContentFormat);
-                    }
-                    else
-                    {
-                        txt = Info.Result.ToString();
-                    }
-
-                    if (!string.IsNullOrEmpty(txt))
-                    {
-                        ClipboardHelpers.CopyText(txt);
-                    }
-                }
-
-                if (Info.TaskSettings.AfterUploadJob.HasFlag(AfterUploadTasks.OpenURL))
-                {
-                    string result;
-
-                    if (!string.IsNullOrEmpty(Info.TaskSettings.AdvancedSettings.OpenURLFormat))
-                    {
-                        result = new UploadInfoParser().Parse(Info, Info.TaskSettings.AdvancedSettings.OpenURLFormat);
-                    }
-                    else
-                    {
-                        result = Info.Result.ToString();
-                    }
-
-                    URLHelpers.OpenURL(result);
-                }
-
-                if (Info.TaskSettings.AfterUploadJob.HasFlag(AfterUploadTasks.ShowQRCode))
-                {
-                    threadWorker.InvokeAsync(() => new QRCodeForm(Info.Result.ToString()).Show());
-                }
             }
             catch (Exception e)
             {
@@ -928,45 +777,7 @@ namespace ShareX
 
         public UploadResult UploadData(IGenericUploaderService service, Stream stream, string fileName)
         {
-            if (!service.CheckConfig(Program.UploadersConfig))
-            {
-                return GetInvalidConfigResult(service);
-            }
-
-            uploader = service.CreateUploader(Program.UploadersConfig, taskReferenceHelper);
-
-            if (uploader != null)
-            {
-                uploader.Errors.DefaultTitle = service.ServiceName + " " + "error";
-                uploader.BufferSize = (int)Math.Pow(2, Program.Settings.BufferSizePower) * 1024;
-                uploader.ProgressChanged += uploader_ProgressChanged;
-
-                if (Info.TaskSettings.AfterUploadJob.HasFlag(AfterUploadTasks.CopyURLToClipboard) && Info.TaskSettings.AdvancedSettings.EarlyCopyURL)
-                {
-                    uploader.EarlyURLCopyRequested += url =>
-                    {
-                        ClipboardHelpers.CopyText(url);
-                        EarlyURLCopied = true;
-                    };
-                }
-
-                fileName = URLHelpers.RemoveBidiControlCharacters(fileName);
-
-                if (Info.TaskSettings.UploadSettings.FileUploadReplaceProblematicCharacters)
-                {
-                    fileName = URLHelpers.ReplaceReservedCharacters(fileName, "_");
-                }
-
-                Info.UploadDuration = Stopwatch.StartNew();
-
-                UploadResult result = uploader.Upload(stream, fileName);
-
-                Info.UploadDuration.Stop();
-
-                return result;
-            }
-
-            return null;
+            return new UploadResult();
         }
 
         private bool CheckUploadFilters(Stream stream, string fileName)
@@ -1010,61 +821,6 @@ namespace ShareX
             FileUploaderService service = UploaderFactory.FileUploaderServices[Info.TaskSettings.GetFileDestinationByDataType(Info.DataType)];
 
             return UploadData(service, stream, fileName);
-        }
-
-        public UploadResult ShortenURL(string url)
-        {
-            URLShortenerService service = UploaderFactory.URLShortenerServices[Info.TaskSettings.URLShortenerDestination];
-
-            if (!service.CheckConfig(Program.UploadersConfig))
-            {
-                return GetInvalidConfigResult(service);
-            }
-
-            URLShortener urlShortener = service.CreateShortener(Program.UploadersConfig, taskReferenceHelper);
-
-            if (urlShortener != null)
-            {
-                return urlShortener.ShortenURL(url);
-            }
-
-            return null;
-        }
-
-        public UploadResult ShareURL(string url)
-        {
-            if (!string.IsNullOrEmpty(url))
-            {
-                URLSharingService service = UploaderFactory.URLSharingServices[Info.TaskSettings.URLSharingServiceDestination];
-
-                if (!service.CheckConfig(Program.UploadersConfig))
-                {
-                    return GetInvalidConfigResult(service);
-                }
-
-                URLSharer urlSharer = service.CreateSharer(Program.UploadersConfig, taskReferenceHelper);
-
-                if (urlSharer != null)
-                {
-                    return urlSharer.ShareURL(url);
-                }
-            }
-
-            return null;
-        }
-
-        private UploadResult GetInvalidConfigResult(IUploaderService uploaderService)
-        {
-            UploadResult ur = new UploadResult();
-
-            string message = string.Format(Resources.WorkerTask_GetInvalidConfigResult__0__configuration_is_invalid_or_missing__Please_check__Destination_settings__window_to_configure_it_,
-                uploaderService.ServiceName);
-            DebugHelper.WriteLine(message);
-            ur.Errors.Add(message);
-
-            OnUploadersConfigWindowRequested(uploaderService);
-
-            return ur;
         }
 
         private bool DownloadFromURL(bool upload)

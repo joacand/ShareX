@@ -37,7 +37,7 @@ namespace ShareX.UploadersLib
 
         public bool Connected { get; private set; }
 
-        public OAuthUserInfo UserInfo { get; private set; }
+        public object UserInfo { get; private set; }
 
         public OAuthLoopbackControl()
         {
@@ -59,43 +59,12 @@ namespace ShareX.UploadersLib
             }
         }
 
-        public void UpdateStatus(OAuth2Info oauth, OAuthUserInfo userInfo = null)
+        public void UpdateStatus(object oauth, object userInfo = null)
         {
-            Connected = OAuth2Info.CheckOAuth(oauth);
-
-            if (Connected)
-            {
-                UserInfo = userInfo;
-            }
-            else
-            {
-                UserInfo = null;
-            }
-
-            UpdateStatus();
         }
 
         private void UpdateStatus()
         {
-            if (Connected)
-            {
-                btnConnect.Text = Resources.Disconnect;
-                if (UserInfo != null && !string.IsNullOrEmpty(UserInfo.name))
-                {
-                    lblStatusValue.Text = string.Format(Resources.LoggedInAs0, UserInfo.name);
-                }
-                else
-                {
-                    lblStatusValue.Text = Resources.OAuthControl_Status_LoggedIn;
-                }
-                lblStatusValue.ForeColor = Color.FromArgb(0, 180, 0);
-            }
-            else
-            {
-                btnConnect.Text = Resources.Connect;
-                lblStatusValue.Text = Resources.OAuthControl_Status_NotLoggedIn;
-                lblStatusValue.ForeColor = Color.FromArgb(220, 0, 0);
-            }
         }
     }
 }
