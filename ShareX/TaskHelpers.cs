@@ -1202,10 +1202,6 @@ namespace ShareX
 
         public static void MainFormUploadImage(Bitmap bmp, TaskSettings taskSettings = null)
         {
-            Program.MainForm.InvokeSafe(() =>
-            {
-                UploadManager.UploadImage(bmp, taskSettings);
-            });
         }
 
         public static void MainFormPrintImage(Bitmap bmp)
@@ -1734,23 +1730,11 @@ namespace ShareX
                     case AfterCaptureTasks.ShowInExplorer: return Resources.folder_stand;
                     case AfterCaptureTasks.ScanQRCode: return ShareXResources.IsDarkTheme ? Resources.barcode_2d_white : Resources.barcode_2d;
                     case AfterCaptureTasks.DoOCR: return ShareXResources.IsDarkTheme ? Resources.edit_drop_cap_white : Resources.edit_drop_cap;
-                    case AfterCaptureTasks.ShowBeforeUploadWindow: return Resources.application__arrow;
-                    case AfterCaptureTasks.UploadImageToHost: return Resources.upload_cloud;
                     case AfterCaptureTasks.DeleteFile: return Resources.bin;
                 }
             }
             else if (value is AfterUploadTasks afterUploadTask)
             {
-                switch (afterUploadTask)
-                {
-                    default: throw new Exception("Icon missing for after upload task: " + afterUploadTask);
-                    case AfterUploadTasks.ShowAfterUploadWindow: return Resources.application_browser;
-                    case AfterUploadTasks.UseURLShortener: return ShareXResources.IsDarkTheme ? Resources.edit_scale_white : Resources.edit_scale;
-                    case AfterUploadTasks.ShareURL: return Resources.globe_share;
-                    case AfterUploadTasks.CopyURLToClipboard: return Resources.clipboard_paste_document_text;
-                    case AfterUploadTasks.OpenURL: return Resources.globe__arrow;
-                    case AfterUploadTasks.ShowQRCode: return ShareXResources.IsDarkTheme ? Resources.barcode_2d_white : Resources.barcode_2d;
-                }
             }
             else if (value is HotkeyType hotkeyType)
             {
