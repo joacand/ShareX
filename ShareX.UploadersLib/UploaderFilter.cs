@@ -53,11 +53,6 @@ namespace ShareX.UploadersLib
             return !string.IsNullOrEmpty(extension) && Extensions.Any(x => x.TrimStart('.').Equals(extension, StringComparison.OrdinalIgnoreCase));
         }
 
-        public IGenericUploaderService GetUploaderService()
-        {
-            return UploaderFactory.AllGenericUploaderServices.FirstOrDefault(x => x.ServiceIdentifier.Equals(Uploader, StringComparison.OrdinalIgnoreCase));
-        }
-
         public void SetExtensions(string extensions)
         {
             if (!string.IsNullOrEmpty(extensions))

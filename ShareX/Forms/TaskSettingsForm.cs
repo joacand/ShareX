@@ -414,8 +414,6 @@ namespace ShareX
 
             #region Uploader filters
 
-            cbUploaderFiltersDestination.Items.AddRange(UploaderFactory.AllGenericUploaderServices.OrderBy(x => x.ServiceName).ToArray());
-
             if (TaskSettings.UploadSettings.UploaderFilters == null) TaskSettings.UploadSettings.UploaderFilters = new List<UploaderFilter>();
 
             foreach (UploaderFilter filter in TaskSettings.UploadSettings.UploaderFilters)
@@ -1485,14 +1483,6 @@ namespace ShareX
 
         private UploaderFilter GetUploaderFilterFromFields()
         {
-            if (cbUploaderFiltersDestination.SelectedItem is IGenericUploaderService service)
-            {
-                UploaderFilter filter = new UploaderFilter();
-                filter.Uploader = service.ServiceIdentifier;
-                filter.SetExtensions(txtUploaderFiltersExtensions.Text);
-                return filter;
-            }
-
             return null;
         }
 
@@ -1510,22 +1500,6 @@ namespace ShareX
 
         private void UpdateUploaderFilterFields(UploaderFilter filter)
         {
-            if (filter == null)
-            {
-                filter = new UploaderFilter();
-            }
-
-            for (int i = 0; i < cbUploaderFiltersDestination.Items.Count; i++)
-            {
-                if (cbUploaderFiltersDestination.Items[i] is IGenericUploaderService service &&
-                    service.ServiceIdentifier.Equals(filter.Uploader, StringComparison.OrdinalIgnoreCase))
-                {
-                    cbUploaderFiltersDestination.SelectedIndex = i;
-                    break;
-                }
-            }
-
-            txtUploaderFiltersExtensions.Text = filter.GetExtensions();
         }
 
         private void btnUploaderFiltersAdd_Click(object sender, EventArgs e)

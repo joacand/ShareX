@@ -1710,14 +1710,6 @@ namespace ShareX
             }
         }
 
-        public static void OpenUploadersConfigWindow(IUploaderService uploaderService = null)
-        {
-        }
-
-        public static void OpenCustomUploaderSettingsWindow()
-        {
-        }
-
         public static Image FindMenuIcon<T>(T value) where T : Enum
         {
             if (value is AfterCaptureTasks afterCaptureTask)

@@ -1834,12 +1834,10 @@ namespace ShareX
 
         private void tsmiDestinationSettings_Click(object sender, EventArgs e)
         {
-            TaskHelpers.OpenUploadersConfigWindow();
         }
 
         private void tsmiCustomUploaderSettings_Click(object sender, EventArgs e)
         {
-            TaskHelpers.OpenCustomUploaderSettingsWindow();
         }
 
         private void tsbApplicationSettings_Click(object sender, EventArgs e)

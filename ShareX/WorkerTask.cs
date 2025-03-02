@@ -28,12 +28,10 @@ using ShareX.Properties;
 using ShareX.UploadersLib;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -43,11 +41,9 @@ namespace ShareX
     {
         public delegate void TaskEventHandler(WorkerTask task);
         public delegate void TaskImageEventHandler(WorkerTask task, Bitmap image);
-        public delegate void UploaderServiceEventHandler(IUploaderService uploaderService);
 
         public event TaskEventHandler StatusChanged, UploadStarted, UploadProgressChanged, UploadCompleted, TaskCompleted;
         public event TaskImageEventHandler ImageReady;
-        public event UploaderServiceEventHandler UploadersConfigWindowRequested;
 
         public TaskInfo Info { get; private set; }
         public TaskStatus Status { get; private set; }
@@ -461,16 +457,6 @@ namespace ShareX
             return true;
         }
 
-        private void AddErrorMessage(UploaderErrorManager errors)
-        {
-            if (Info.Result == null)
-            {
-                Info.Result = new UploadResult();
-            }
-
-            Info.Result.Errors.Add(errors);
-        }
-
         private void AddErrorMessage(string error)
         {
             if (Info.Result == null)
@@ -775,103 +761,9 @@ namespace ShareX
             }
         }
 
-        public UploadResult UploadData(IGenericUploaderService service, Stream stream, string fileName)
-        {
-            return new UploadResult();
-        }
-
-        private bool CheckUploadFilters(Stream stream, string fileName)
-        {
-            if (Info.TaskSettings.UploadSettings.UploaderFilters != null && !string.IsNullOrEmpty(fileName) && stream != null)
-            {
-                UploaderFilter filter = Info.TaskSettings.UploadSettings.UploaderFilters.FirstOrDefault(x => x.IsValidFilter(fileName));
-
-                if (filter != null)
-                {
-                    IGenericUploaderService service = filter.GetUploaderService();
-
-                    if (service != null)
-                    {
-                        Info.Result = UploadData(service, stream, fileName);
-
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        public UploadResult UploadImage(Stream stream, string fileName)
-        {
-            ImageUploaderService service = UploaderFactory.ImageUploaderServices[Info.TaskSettings.ImageDestination];
-
-            return UploadData(service, stream, fileName);
-        }
-
-        public UploadResult UploadText(Stream stream, string fileName)
-        {
-            TextUploaderService service = UploaderFactory.TextUploaderServices[Info.TaskSettings.TextDestination];
-
-            return UploadData(service, stream, fileName);
-        }
-
-        public UploadResult UploadFile(Stream stream, string fileName)
-        {
-            FileUploaderService service = UploaderFactory.FileUploaderServices[Info.TaskSettings.GetFileDestinationByDataType(Info.DataType)];
-
-            return UploadData(service, stream, fileName);
-        }
-
         private bool DownloadFromURL(bool upload)
         {
-            string url = Info.Result.URL.Trim();
-            Info.Result.URL = "";
-
-            if (!Info.TaskSettings.UploadSettings.FileUploadUseNamePattern)
-            {
-                try
-                {
-                    string fileName = WebHelpers.GetFileNameFromWebServerAsync(url).GetAwaiter().GetResult();
-
-                    if (!string.IsNullOrEmpty(fileName))
-                    {
-                        Info.FileName = FileHelpers.SanitizeFileName(fileName);
-                    }
-                }
-                catch (Exception e)
-                {
-                    DebugHelper.WriteException(e);
-                }
-            }
-
-            string screenshotsFolder = TaskHelpers.GetScreenshotsFolder(Info.TaskSettings);
-            Info.FilePath = TaskHelpers.HandleExistsFile(screenshotsFolder, Info.FileName, Info.TaskSettings);
-
-            if (!string.IsNullOrEmpty(Info.FilePath))
-            {
-                Info.Status = Resources.UploadTask_DownloadAndUpload_Downloading;
-                OnStatusChanged();
-
-                try
-                {
-                    WebHelpers.DownloadFileAsync(url, Info.FilePath).GetAwaiter().GetResult();
-
-                    if (upload)
-                    {
-                        LoadFileStream();
-                    }
-
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    DebugHelper.WriteException(e);
-                    MessageBox.Show(string.Format(Resources.UploadManager_DownloadAndUploadFile_Download_failed, e), "ShareX", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-
-            return false;
+            return true;
         }
 
         private void DoOCR()
@@ -988,14 +880,6 @@ namespace ShareX
             TaskCompleted?.Invoke(this);
 
             Dispose();
-        }
-
-        private void OnUploadersConfigWindowRequested(IUploaderService uploaderService)
-        {
-            if (UploadersConfigWindowRequested != null)
-            {
-                threadWorker.InvokeAsync(() => UploadersConfigWindowRequested(uploaderService));
-            }
         }
 
         public void Dispose()
