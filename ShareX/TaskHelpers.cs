@@ -1848,18 +1848,6 @@ namespace ShareX
 
         public static void ImportCustomUploader(string filePath)
         {
-            if (Program.UploadersConfig != null)
-            {
-                try
-                {
-                    CustomUploaderItem cui = JsonHelpers.DeserializeFromFile<CustomUploaderItem>(filePath);
-                }
-                catch (Exception e)
-                {
-                    DebugHelper.WriteException(e);
-                    e.ShowError(false);
-                }
-            }
         }
 
         public static void ImportImageEffect(string filePath)
