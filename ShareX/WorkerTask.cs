@@ -58,7 +58,6 @@ namespace ShareX
         public string Text { get; private set; }
 
         private ThreadWorker threadWorker;
-        private GenericUploader uploader;
         private TaskReferenceHelper taskReferenceHelper;
 
         #region Constructors
@@ -273,7 +272,6 @@ namespace ShareX
                     break;
                 case TaskStatus.Preparing:
                 case TaskStatus.Working:
-                    if (uploader != null) uploader.StopUpload();
                     Status = TaskStatus.Stopping;
                     Info.Status = Resources.UploadTask_Stop_Stopping;
                     OnStatusChanged();
@@ -311,7 +309,6 @@ namespace ShareX
                 {
                     if (Info.IsUploadJob && TaskHelpers.IsUploadAllowed())
                     {
-                        DoUploadJob();
                     }
                     else
                     {
@@ -361,100 +358,6 @@ namespace ShareX
                 CustomUploaderIndex = Info.TaskSettings.CustomUploaderIndex,
                 TextFormat = Info.TaskSettings.AdvancedSettings.TextFormat
             };
-        }
-
-        private void DoUploadJob()
-        {
-            if (Program.Settings.ShowUploadWarning)
-            {
-                bool disableUpload = !FirstTimeUploadForm.ShowForm();
-
-                Program.Settings.ShowUploadWarning = false;
-
-                if (disableUpload)
-                {
-                    Program.DefaultTaskSettings.AfterCaptureJob = Program.DefaultTaskSettings.AfterCaptureJob.Remove(AfterCaptureTasks.UploadImageToHost);
-
-                    foreach (HotkeySettings hotkeySettings in Program.HotkeysConfig.Hotkeys)
-                    {
-                        if (hotkeySettings.TaskSettings != null)
-                        {
-                            hotkeySettings.TaskSettings.AfterCaptureJob = hotkeySettings.TaskSettings.AfterCaptureJob.Remove(AfterCaptureTasks.UploadImageToHost);
-                        }
-                    }
-
-                    Info.TaskSettings.AfterCaptureJob = Info.TaskSettings.AfterCaptureJob.Remove(AfterCaptureTasks.UploadImageToHost);
-                    Info.Result.IsURLExpected = false;
-                    RequestSettingUpdate = true;
-
-                    return;
-                }
-            }
-
-            if (Program.Settings.ShowLargeFileSizeWarning > 0)
-            {
-                long dataSize = Program.Settings.BinaryUnits ? Program.Settings.ShowLargeFileSizeWarning * 1024 * 1024 : Program.Settings.ShowLargeFileSizeWarning * 1000 * 1000;
-                if (Data != null && Data.Length > dataSize)
-                {
-                    using (MyMessageBox msgbox = new MyMessageBox(Resources.UploadTask_DoUploadJob_You_are_attempting_to_upload_a_large_file, "ShareX",
-                        MessageBoxButtons.YesNo, Resources.UploadManager_IsUploadConfirmed_Don_t_show_this_message_again_))
-                    {
-                        msgbox.ShowDialog();
-                        if (msgbox.IsChecked) Program.Settings.ShowLargeFileSizeWarning = 0;
-                        if (msgbox.DialogResult == DialogResult.No) Stop();
-                    }
-                }
-            }
-
-            if (!StopRequested)
-            {
-                SettingManager.WaitUploadersConfig();
-
-                Status = TaskStatus.Working;
-                Info.Status = Resources.UploadTask_DoUploadJob_Uploading;
-
-                TaskbarManager.SetProgressState(Program.MainForm, TaskbarProgressBarStatus.Normal);
-
-                bool cancelUpload = false;
-
-                if (Info.TaskSettings.AfterCaptureJob.HasFlag(AfterCaptureTasks.ShowBeforeUploadWindow))
-                {
-                    using (BeforeUploadForm form = new BeforeUploadForm(Info))
-                    {
-                        cancelUpload = form.ShowDialog() != DialogResult.OK;
-                    }
-                }
-
-                if (!cancelUpload)
-                {
-                    OnUploadStarted();
-
-                    bool isError = DoUpload(Data, Info.FileName);
-
-                    if (isError && Program.Settings.MaxUploadFailRetry > 0)
-                    {
-                        for (int retry = 1; !StopRequested && isError && retry <= Program.Settings.MaxUploadFailRetry; retry++)
-                        {
-                            DebugHelper.WriteLine("Upload failed. Retrying upload.");
-                            isError = DoUpload(Data, Info.FileName, retry);
-                        }
-                    }
-
-                    if (!isError)
-                    {
-                        OnUploadCompleted();
-                    }
-                }
-                else
-                {
-                    Info.Result.IsURLExpected = false;
-                }
-            }
-        }
-
-        private bool DoUpload(Stream data, string fileName, int retry = 0)
-        {
-            return true;
         }
 
         private void AddErrorMessage(string error)

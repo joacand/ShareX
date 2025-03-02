@@ -67,7 +67,6 @@ namespace ShareX.Setup
 
         private static string SolutionPath => Path.Combine(ParentDir, "ShareX.sln");
         private static string BinDir => Path.Combine(ParentDir, "ShareX", "bin", Configuration);
-        private static string SteamLauncherDir => Path.Combine(ParentDir, "ShareX.Steam", "bin", Configuration);
         private static string ExecutablePath => Path.Combine(BinDir, "ShareX.exe");
 
         private static string OutputDir => Path.Combine(ParentDir, "Output");
@@ -139,9 +138,6 @@ namespace ShareX.Setup
 
             if (Job.HasFlag(SetupJobs.CreateSteamFolder))
             {
-                CreateSteamFolder();
-
-                CreateZipFile(SteamOutputDir, SteamZipPath);
             }
 
             if (Job.HasFlag(SetupJobs.CreateMicrosoftStoreFolder))
@@ -330,21 +326,6 @@ namespace ShareX.Setup
 
         private static void CreateSteamFolder()
         {
-            Console.WriteLine("Creating Steam folder: " + SteamOutputDir);
-
-            if (Directory.Exists(SteamOutputDir))
-            {
-                Directory.Delete(SteamOutputDir, true);
-            }
-
-            Directory.CreateDirectory(SteamOutputDir);
-
-            FileHelpers.CopyFiles(Path.Combine(SteamLauncherDir, "ShareX_Launcher.exe"), SteamOutputDir);
-            FileHelpers.CopyFiles(Path.Combine(SteamLauncherDir, "steam_appid.txt"), SteamOutputDir);
-            FileHelpers.CopyFiles(Path.Combine(SteamLauncherDir, "installscript.vdf"), SteamOutputDir);
-            FileHelpers.CopyFiles(SteamLauncherDir, SteamOutputDir, "*.dll");
-
-            CreateFolder(BinDir, SteamUpdatesDir, SetupJobs.CreateSteamFolder);
         }
 
         private static void CreateFolder(string source, string destination, SetupJobs job)
