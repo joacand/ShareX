@@ -82,31 +82,7 @@ namespace ShareX.HelpersLib
 
         public static DialogResult Start(UpdateChecker updateChecker, bool activateWindow = true)
         {
-            DialogResult result = DialogResult.None;
-
-            if (updateChecker != null && updateChecker.Status == UpdateStatus.UpdateAvailable)
-            {
-                IsOpen = true;
-
-                try
-                {
-                    using (UpdateMessageBox messageBox = new UpdateMessageBox(updateChecker, activateWindow))
-                    {
-                        result = messageBox.ShowDialog();
-                    }
-
-                    if (result == DialogResult.Yes)
-                    {
-                        updateChecker.DownloadUpdate();
-                    }
-                }
-                finally
-                {
-                    IsOpen = false;
-                }
-            }
-
-            return result;
+            return DialogResult.Cancel;
         }
 
         private void UpdateMessageBox_Shown(object sender, EventArgs e)

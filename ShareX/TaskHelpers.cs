@@ -1989,101 +1989,19 @@ namespace ShareX
 
         public static async Task DownloadDevBuild()
         {
-            GitHubUpdateChecker updateChecker = new GitHubUpdateChecker("ShareX", "DevBuilds")
-            {
-                IsDev = true,
-                IsPortable = Program.Portable
-            };
-
-            await updateChecker.CheckUpdateAsync();
-
-            if (updateChecker.Status == UpdateStatus.UpdateAvailable)
-            {
-                UpdateMessageBox.Start(updateChecker);
-            }
-            else if (updateChecker.Status == UpdateStatus.UpToDate)
-            {
-                MessageBox.Show(Resources.ShareXIsUpToDate, "ShareX", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
         }
 
         public static async Task DownloadAppVeyorBuild()
         {
-            AppVeyorUpdateChecker updateChecker = new AppVeyorUpdateChecker()
-            {
-                IsDev = true,
-                IsPortable = Program.Portable,
-                Branch = "develop"
-            };
-
-            await updateChecker.CheckUpdateAsync();
-
-            UpdateMessageBox.Start(updateChecker);
         }
 
         public static Image GenerateQRCode(string text, int size)
         {
-            if (CheckQRCodeContent(text))
-            {
-                try
-                {
-                    BarcodeWriter writer = new BarcodeWriter
-                    {
-                        Format = BarcodeFormat.QR_CODE,
-                        Options = new QrCodeEncodingOptions
-                        {
-                            Width = size,
-                            Height = size,
-                            CharacterSet = "UTF-8",
-                            PureBarcode = true,
-                            NoPadding = false,
-                            Margin = 1
-                        },
-                        Renderer = new BitmapRenderer()
-                    };
-
-                    return writer.Write(text);
-                }
-                catch (Exception e)
-                {
-                    e.ShowError();
-                }
-            }
-
             return null;
         }
 
         public static string[] BarcodeScan(Bitmap bmp, bool scanQRCodeOnly = false)
         {
-            try
-            {
-                BarcodeReader barcodeReader = new BarcodeReader
-                {
-                    AutoRotate = true,
-                    Options = new DecodingOptions
-                    {
-                        TryHarder = true,
-                        TryInverted = true
-                    }
-                };
-
-                if (scanQRCodeOnly)
-                {
-                    barcodeReader.Options.PossibleFormats = new List<BarcodeFormat>() { BarcodeFormat.QR_CODE };
-                }
-
-                Result[] results = barcodeReader.DecodeMultiple(bmp);
-
-                if (results != null)
-                {
-                    return results.Where(x => x != null && !string.IsNullOrEmpty(x.Text)).Select(x => x.Text).ToArray();
-                }
-            }
-            catch (Exception e)
-            {
-                e.ShowError();
-            }
-
             return null;
         }
 
