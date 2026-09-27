@@ -62,14 +62,7 @@ namespace ShareX
                         continue;
                     }
 
-                    if (URLHelpers.IsValidURL(command.Command))
-                    {
-                        UploadManager.DownloadAndUploadFile(command.Command, taskSettings);
-                    }
-                    else
-                    {
-                        UploadManager.UploadFile(command.Command, taskSettings);
-                    }
+                    UploadManager.UploadFile(command.Command, taskSettings);
                 }
             }
         }

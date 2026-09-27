@@ -126,11 +126,6 @@ namespace ShareX
 
             ExportImportControl.UploadRequested += json => UploadManager.UploadText(json);
 
-#if MicrosoftStore
-            tsmiDNSChanger.Visible = false;
-            tsmiTrayDNSChanger.Visible = false;
-#endif
-
             if (SystemOptions.DisableUpload)
             {
                 tsmiTrayUpload.Visible = false;
@@ -462,7 +457,7 @@ namespace ShareX
 
             tsmiStopUpload.Visible = tsmiOpen.Visible = tsmiCopy.Visible = tsmiShowErrors.Visible = tsmiShowResponse.Visible =
                 tsmiGoogleLens.Visible = tsmiBingVisualSearch.Visible = tsmiShowQRCode.Visible = tsmiOCRImage.Visible =
-                tsmiCombineImages.Visible = tsmiUploadSelectedFile.Visible = tsmiDownloadSelectedURL.Visible = tsmiEditSelectedFile.Visible =
+                tsmiCombineImages.Visible = tsmiUploadSelectedFile.Visible = tsmiEditSelectedFile.Visible =
                 tsmiBeautifyImage.Visible = tsmiAddImageEffects.Visible = tsmiPinSelectedFile.Visible = tsmiRunAction.Visible =
                 tsmiDeleteSelectedItem.Visible = tsmiDeleteSelectedFile.Visible = false;
 
@@ -569,7 +564,6 @@ namespace ShareX
                     }
 
                     tsmiUploadSelectedFile.Visible = !SystemOptions.DisableUpload && uim.SelectedItem.IsFileExist;
-                    tsmiDownloadSelectedURL.Visible = uim.SelectedItem.IsFileURL;
                     tsmiEditSelectedFile.Visible = uim.SelectedItem.IsImageFile;
                     tsmiBeautifyImage.Visible = uim.SelectedItem.IsImageFile;
                     tsmiAddImageEffects.Visible = uim.SelectedItem.IsImageFile;
@@ -1174,9 +1168,6 @@ namespace ShareX
                 case Keys.Control | Keys.U:
                     uim.Upload();
                     break;
-                case Keys.Control | Keys.D:
-                    uim.Download();
-                    break;
                 case Keys.Control | Keys.E:
                     uim.EditImage();
                     break;
@@ -1415,11 +1406,6 @@ namespace ShareX
             UploadManager.ShowTextUploadDialog();
         }
 
-        private void tsmiUploadURL_Click(object sender, EventArgs e)
-        {
-            UploadManager.UploadURL();
-        }
-
         private void tsbDragDropUpload_Click(object sender, EventArgs e)
         {
             TaskHelpers.OpenDropWindow();
@@ -1542,11 +1528,6 @@ namespace ShareX
         private void tsmiMonitorTest_Click(object sender, EventArgs e)
         {
             TaskHelpers.OpenMonitorTest();
-        }
-
-        private void tsmiDNSChanger_Click(object sender, EventArgs e)
-        {
-            TaskHelpers.OpenDNSChanger();
         }
 
         private void TsddbAfterCaptureTasks_DropDownOpening(object sender, EventArgs e)
@@ -1995,11 +1976,6 @@ namespace ShareX
         private void tsmiUploadSelectedFile_Click(object sender, EventArgs e)
         {
             uim.Upload();
-        }
-
-        private void tsmiDownloadSelectedURL_Click(object sender, EventArgs e)
-        {
-            uim.Download();
         }
 
         private void tsmiDeleteSelectedItem_Click(object sender, EventArgs e)

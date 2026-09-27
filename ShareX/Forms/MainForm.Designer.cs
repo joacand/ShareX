@@ -92,7 +92,6 @@ namespace ShareX
             this.tsmiBorderlessWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiInspectWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMonitorTest = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiDNSChanger = new System.Windows.Forms.ToolStripMenuItem();
             this.tssMain1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsddbAfterCaptureTasks = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsbApplicationSettings = new System.Windows.Forms.ToolStripButton();
@@ -149,7 +148,6 @@ namespace ShareX
             this.tsmiCopyFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.tssCopy6 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiUploadSelectedFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiDownloadSelectedURL = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiEditSelectedFile = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBeautifyImage = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAddImageEffects = new System.Windows.Forms.ToolStripMenuItem();
@@ -196,7 +194,6 @@ namespace ShareX
             this.tsmiTrayUploadFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTrayUploadClipboard = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTrayUploadText = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiTrayUploadURL = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTrayUploadDragDrop = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTrayWorkflows = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTrayTools = new System.Windows.Forms.ToolStripMenuItem();
@@ -225,7 +222,6 @@ namespace ShareX
             this.tsmiTrayBorderlessWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTrayInspectWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTrayMonitorTest = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiTrayDNSChanger = new System.Windows.Forms.ToolStripMenuItem();
             this.tssTray1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiTrayAfterCaptureTasks = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTrayAfterUploadTasks = new System.Windows.Forms.ToolStripMenuItem();
@@ -569,8 +565,7 @@ namespace ShareX
             this.tsmiClipboardViewer,
             this.tsmiBorderlessWindow,
             this.tsmiInspectWindow,
-            this.tsmiMonitorTest,
-            this.tsmiDNSChanger});
+            this.tsmiMonitorTest});
             this.tsddbTools.Image = global::ShareX.Properties.Resources.toolbox;
             resources.ApplyResources(this.tsddbTools, "tsddbTools");
             this.tsddbTools.Name = "tsddbTools";
@@ -742,13 +737,6 @@ namespace ShareX
             resources.ApplyResources(this.tsmiMonitorTest, "tsmiMonitorTest");
             this.tsmiMonitorTest.Click += new System.EventHandler(this.tsmiMonitorTest_Click);
             // 
-            // tsmiDNSChanger
-            // 
-            this.tsmiDNSChanger.Image = global::ShareX.Properties.Resources.network_ip;
-            this.tsmiDNSChanger.Name = "tsmiDNSChanger";
-            resources.ApplyResources(this.tsmiDNSChanger, "tsmiDNSChanger");
-            this.tsmiDNSChanger.Click += new System.EventHandler(this.tsmiDNSChanger_Click);
-            // 
             // tssMain1
             // 
             this.tssMain1.Margin = new System.Windows.Forms.Padding(0, 3, 0, 6);
@@ -845,7 +833,6 @@ namespace ShareX
             this.tsmiOpen,
             this.tsmiCopy,
             this.tsmiUploadSelectedFile,
-            this.tsmiDownloadSelectedURL,
             this.tsmiEditSelectedFile,
             this.tsmiBeautifyImage,
             this.tsmiAddImageEffects,
@@ -1154,12 +1141,6 @@ namespace ShareX
             resources.ApplyResources(this.tsmiUploadSelectedFile, "tsmiUploadSelectedFile");
             this.tsmiUploadSelectedFile.Click += new System.EventHandler(this.tsmiUploadSelectedFile_Click);
             // 
-            // tsmiDownloadSelectedURL
-            // 
-            this.tsmiDownloadSelectedURL.Image = global::ShareX.Properties.Resources.drive_download;
-            this.tsmiDownloadSelectedURL.Name = "tsmiDownloadSelectedURL";
-            resources.ApplyResources(this.tsmiDownloadSelectedURL, "tsmiDownloadSelectedURL");
-            this.tsmiDownloadSelectedURL.Click += new System.EventHandler(this.tsmiDownloadSelectedURL_Click);
             // 
             // tsmiEditSelectedFile
             // 
@@ -1488,7 +1469,6 @@ namespace ShareX
             this.tsmiTrayUploadFolder,
             this.tsmiTrayUploadClipboard,
             this.tsmiTrayUploadText,
-            this.tsmiTrayUploadURL,
             this.tsmiTrayUploadDragDrop});
             this.tsmiTrayUpload.Image = global::ShareX.Properties.Resources.arrow_090;
             this.tsmiTrayUpload.Name = "tsmiTrayUpload";
@@ -1522,12 +1502,6 @@ namespace ShareX
             resources.ApplyResources(this.tsmiTrayUploadText, "tsmiTrayUploadText");
             this.tsmiTrayUploadText.Click += new System.EventHandler(this.tsmiUploadText_Click);
             // 
-            // tsmiTrayUploadURL
-            // 
-            this.tsmiTrayUploadURL.Image = global::ShareX.Properties.Resources.drive;
-            this.tsmiTrayUploadURL.Name = "tsmiTrayUploadURL";
-            resources.ApplyResources(this.tsmiTrayUploadURL, "tsmiTrayUploadURL");
-            this.tsmiTrayUploadURL.Click += new System.EventHandler(this.tsmiUploadURL_Click);
             // 
             // tsmiTrayUploadDragDrop
             // 
@@ -1569,8 +1543,7 @@ namespace ShareX
             this.tsmiTrayClipboardViewer,
             this.tsmiTrayBorderlessWindow,
             this.tsmiTrayInspectWindow,
-            this.tsmiTrayMonitorTest,
-            this.tsmiTrayDNSChanger});
+            this.tsmiTrayMonitorTest});
             this.tsmiTrayTools.Image = global::ShareX.Properties.Resources.toolbox;
             this.tsmiTrayTools.Name = "tsmiTrayTools";
             resources.ApplyResources(this.tsmiTrayTools, "tsmiTrayTools");
@@ -1741,13 +1714,6 @@ namespace ShareX
             this.tsmiTrayMonitorTest.Name = "tsmiTrayMonitorTest";
             resources.ApplyResources(this.tsmiTrayMonitorTest, "tsmiTrayMonitorTest");
             this.tsmiTrayMonitorTest.Click += new System.EventHandler(this.tsmiMonitorTest_Click);
-            // 
-            // tsmiTrayDNSChanger
-            // 
-            this.tsmiTrayDNSChanger.Image = global::ShareX.Properties.Resources.network_ip;
-            this.tsmiTrayDNSChanger.Name = "tsmiTrayDNSChanger";
-            resources.ApplyResources(this.tsmiTrayDNSChanger, "tsmiTrayDNSChanger");
-            this.tsmiTrayDNSChanger.Click += new System.EventHandler(this.tsmiDNSChanger_Click);
             // 
             // tssTray1
             // 
@@ -2109,8 +2075,6 @@ namespace ShareX
         private System.Windows.Forms.ToolStripMenuItem tsmiMonitorTest;
         private System.Windows.Forms.ToolStripMenuItem tsmiTrayMonitorTest;
         private System.Windows.Forms.ToolStripMenuItem tsmiTrayShow;
-        private System.Windows.Forms.ToolStripMenuItem tsmiDNSChanger;
-        private System.Windows.Forms.ToolStripMenuItem tsmiTrayDNSChanger;
         private System.Windows.Forms.ToolStripMenuItem tsmiRuler;
         private System.Windows.Forms.ToolStripMenuItem tsmiTrayRuler;
         private System.Windows.Forms.ToolStripMenuItem tsmiOpenThumbnailFile;
@@ -2128,7 +2092,6 @@ namespace ShareX
         private System.Windows.Forms.ToolStripMenuItem tsmiTrayUpload;
         private System.Windows.Forms.ToolStripMenuItem tsmiTrayUploadFile;
         private System.Windows.Forms.ToolStripMenuItem tsmiTrayUploadClipboard;
-        private System.Windows.Forms.ToolStripMenuItem tsmiTrayUploadURL;
         private System.Windows.Forms.ToolStripMenuItem tsmiTrayUploadDragDrop;
         private System.Windows.Forms.ToolStripMenuItem tsmiEditSelectedFile;
         private System.Windows.Forms.ToolStripMenuItem tsmiDeleteSelectedFile;
@@ -2149,7 +2112,6 @@ namespace ShareX
         private System.Windows.Forms.ToolStripMenuItem tsmiTrayScrollingCapture;
         private System.Windows.Forms.ToolStripMenuItem tsmiImageCombiner;
         private System.Windows.Forms.ToolStripMenuItem tsmiTrayImageCombiner;
-        private System.Windows.Forms.ToolStripMenuItem tsmiDownloadSelectedURL;
         private System.Windows.Forms.ToolStripMenuItem tsmiOCRImage;
         private System.Windows.Forms.ToolStripMenuItem tsmiCombineImages;
         private System.Windows.Forms.ToolStripMenuItem tsmiOpenActionsToolbar;

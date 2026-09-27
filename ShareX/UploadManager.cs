@@ -1,4 +1,4 @@
-﻿#region License Information (GPL v3)
+#region License Information (GPL v3)
 
 /*
     ShareX - A program that allows you to take screenshots and share any file type
@@ -144,37 +144,10 @@ namespace ShareX
             }
         }
 
-        public static void ProcessImageUpload(Bitmap bmp, TaskSettings taskSettings)
-        {
-        }
-
         public static void ProcessTextUpload(string text, TaskSettings taskSettings)
         {
             if (!string.IsNullOrEmpty(text))
             {
-                string url = text.Trim();
-
-                if (URLHelpers.IsValidURL(url))
-                {
-                    if (taskSettings.UploadSettings.ClipboardUploadURLContents)
-                    {
-                        DownloadAndUploadFile(url, taskSettings);
-                        return;
-                    }
-
-                    if (taskSettings.UploadSettings.ClipboardUploadShortenURL)
-                    {
-                        ShortenURL(url, taskSettings);
-                        return;
-                    }
-
-                    if (taskSettings.UploadSettings.ClipboardUploadShareURL)
-                    {
-                        ShareURL(url, taskSettings);
-                        return;
-                    }
-                }
-
                 if (taskSettings.UploadSettings.ClipboardUploadAutoIndexFolder && text.Length <= 260 && Directory.Exists(text))
                 {
                     IndexFolder(text, taskSettings);
@@ -200,22 +173,7 @@ namespace ShareX
 
             try
             {
-                if (Clipboard.ContainsImage())
-                {
-                    Bitmap image;
-
-                    if (HelpersOptions.UseAlternativeClipboardGetImage)
-                    {
-                        image = ClipboardHelpers.GetImageAlternative2();
-                    }
-                    else
-                    {
-                        image = (Bitmap)Clipboard.GetImage();
-                    }
-
-                    ProcessImageUpload(image, taskSettings);
-                }
-                else if (Clipboard.ContainsText())
+                if (Clipboard.ContainsText())
                 {
                     string text = Clipboard.GetText();
 
@@ -294,48 +252,6 @@ namespace ShareX
             {
                 string text = data.GetData(DataFormats.Text, false) as string;
                 UploadText(text, taskSettings, true);
-            }
-        }
-
-        public static void UploadURL(TaskSettings taskSettings = null)
-        {
-            if (taskSettings == null) taskSettings = TaskSettings.GetDefaultTaskSettings();
-
-            string inputText = null;
-
-            string text = ClipboardHelpers.GetText(true);
-
-            if (URLHelpers.IsValidURL(text))
-            {
-                inputText = text;
-            }
-
-            string url = InputBox.Show(Resources.UploadManager_UploadURL_URL_to_download_from_and_upload, inputText);
-
-            if (!string.IsNullOrEmpty(url))
-            {
-                DownloadAndUploadFile(url, taskSettings);
-            }
-        }
-
-        public static void ShowShortenURLDialog(TaskSettings taskSettings = null)
-        {
-            if (taskSettings == null) taskSettings = TaskSettings.GetDefaultTaskSettings();
-
-            string inputText = null;
-
-            string text = ClipboardHelpers.GetText(true);
-
-            if (URLHelpers.IsValidURL(text))
-            {
-                inputText = text;
-            }
-
-            string url = InputBox.Show(Resources.UploadManager_ShowShortenURLDialog_ShortenURL, inputText, Resources.UploadManager_ShowShortenURLDialog_Shorten);
-
-            if (!string.IsNullOrEmpty(url))
-            {
-                ShortenURL(url, taskSettings);
             }
         }
 
@@ -420,77 +336,6 @@ namespace ShareX
             {
                 WorkerTask task = WorkerTask.CreateDataUploaderTask(EDataType.Image, stream, fileName, taskSettings);
                 TaskManager.Start(task);
-            }
-        }
-
-        public static void ShortenURL(string url, TaskSettings taskSettings = null)
-        {
-            if (!string.IsNullOrEmpty(url))
-            {
-                if (taskSettings == null) taskSettings = TaskSettings.GetDefaultTaskSettings();
-
-                WorkerTask task = WorkerTask.CreateURLShortenerTask(url, taskSettings);
-                TaskManager.Start(task);
-            }
-        }
-
-        public static void ShortenURL(string url, UrlShortenerType urlShortener)
-        {
-            if (!string.IsNullOrEmpty(url))
-            {
-                TaskSettings taskSettings = TaskSettings.GetDefaultTaskSettings();
-                taskSettings.URLShortenerDestination = urlShortener;
-
-                WorkerTask task = WorkerTask.CreateURLShortenerTask(url, taskSettings);
-                TaskManager.Start(task);
-            }
-        }
-
-        public static void ShareURL(string url, TaskSettings taskSettings = null)
-        {
-            if (!string.IsNullOrEmpty(url))
-            {
-                if (taskSettings == null) taskSettings = TaskSettings.GetDefaultTaskSettings();
-
-                WorkerTask task = WorkerTask.CreateShareURLTask(url, taskSettings);
-                TaskManager.Start(task);
-            }
-        }
-
-        public static void ShareURL(string url, URLSharingServices urlSharingService)
-        {
-            if (!string.IsNullOrEmpty(url))
-            {
-                TaskSettings taskSettings = TaskSettings.GetDefaultTaskSettings();
-                taskSettings.URLSharingServiceDestination = urlSharingService;
-
-                WorkerTask task = WorkerTask.CreateShareURLTask(url, taskSettings);
-                TaskManager.Start(task);
-            }
-        }
-
-        public static void DownloadFile(string url, TaskSettings taskSettings = null)
-        {
-            DownloadFile(url, false, taskSettings);
-        }
-
-        public static void DownloadAndUploadFile(string url, TaskSettings taskSettings = null)
-        {
-            DownloadFile(url, true, taskSettings);
-        }
-
-        private static void DownloadFile(string url, bool upload, TaskSettings taskSettings = null)
-        {
-            if (!string.IsNullOrEmpty(url))
-            {
-                if (taskSettings == null) taskSettings = TaskSettings.GetDefaultTaskSettings();
-
-                WorkerTask task = WorkerTask.CreateDownloadTask(url, upload, taskSettings);
-
-                if (task != null)
-                {
-                    TaskManager.Start(task);
-                }
             }
         }
 
