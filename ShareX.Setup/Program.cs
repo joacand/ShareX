@@ -358,10 +358,6 @@ namespace ShareX.Setup
                 }
 
                 FileHelpers.CopyFiles(RecorderDevicesSetupPath, destination);
-
-                FileHelpers.CopyFiles(Path.Combine(source, "ShareX_NativeMessagingHost.exe"), destination);
-                FileHelpers.CopyFiles(Path.Combine(source, "host-manifest-chrome.json"), destination);
-                FileHelpers.CopyFiles(Path.Combine(source, "host-manifest-firefox.json"), destination);
             }
 
             foreach (string directory in Directory.GetDirectories(source))
@@ -409,10 +405,20 @@ namespace ShareX.Setup
                 string filePath = Path.Combine(OutputDir, fileName);
 
                 Console.WriteLine("Downloading: " + FFmpegDownloadURL);
-                WebHelpers.DownloadFileAsync(FFmpegDownloadURL, filePath).GetAwaiter().GetResult();
+                DownloadFileAsync(FFmpegDownloadURL, filePath).GetAwaiter().GetResult();
 
                 Console.WriteLine("Extracting: " + filePath);
                 ZipManager.Extract(filePath, OutputDir, false, entry => entry.Name.Equals("ffmpeg.exe", StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        private static async System.Threading.Tasks.Task DownloadFileAsync(string url, string filePath)
+        {
+            using (System.Net.Http.HttpClient client = new System.Net.Http.HttpClient())
+            using (System.IO.Stream stream = await client.GetStreamAsync(url))
+            using (System.IO.FileStream file = System.IO.File.Create(filePath))
+            {
+                await stream.CopyToAsync(file);
             }
         }
 

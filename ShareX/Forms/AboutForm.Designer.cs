@@ -1,4 +1,4 @@
-﻿namespace ShareX
+namespace ShareX
 {
     partial class AboutForm
     {
@@ -40,7 +40,6 @@
             this.btnLicenses = new System.Windows.Forms.Button();
             this.lblBuild = new System.Windows.Forms.Label();
             this.cLogo = new ShareX.HelpersLib.Canvas();
-            this.uclUpdate = new ShareX.HelpersLib.UpdateCheckerLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -100,11 +99,6 @@
             this.cLogo.Interval = 100;
             this.cLogo.Name = "cLogo";
             // 
-            // uclUpdate
-            // 
-            resources.ApplyResources(this.uclUpdate, "uclUpdate");
-            this.uclUpdate.Name = "uclUpdate";
-            // 
             // AboutForm
             // 
             resources.ApplyResources(this, "$this");
@@ -118,7 +112,6 @@
             this.Controls.Add(this.btnShareXLicense);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.rtbInfo);
-            this.Controls.Add(this.uclUpdate);
             this.Name = "AboutForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Shown += new System.EventHandler(this.AboutForm_Shown);
@@ -133,7 +126,6 @@
         private System.Windows.Forms.Label lblProductName;
         private HelpersLib.Canvas cLogo;
         private HelpersLib.ReadOnlyRichTextBox rtbInfo;
-        private HelpersLib.UpdateCheckerLabel uclUpdate;
         private System.Windows.Forms.PictureBox pbLogo;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnShareXLicense;

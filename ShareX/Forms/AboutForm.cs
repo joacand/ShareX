@@ -1,4 +1,4 @@
-﻿#region License Information (GPL v3)
+#region License Information (GPL v3)
 
 /*
     ShareX - A program that allows you to take screenshots and share any file type
@@ -34,7 +34,6 @@ namespace ShareX
     public partial class AboutForm : Form
     {
         private EasterEggAboutAnimation easterEgg;
-        private bool checkUpdate = false;
 
         public AboutForm()
         {
@@ -44,23 +43,11 @@ namespace ShareX
             ShareXResources.ApplyTheme(this, true);
 
 #if STEAM
-            uclUpdate.Visible = false;
             lblBuild.Text = "Steam build";
             lblBuild.Visible = true;
 #elif MicrosoftStore
-            uclUpdate.Visible = false;
             lblBuild.Text = "Microsoft Store build";
             lblBuild.Visible = true;
-#else
-            if (!SystemOptions.DisableUpdateCheck)
-            {
-                uclUpdate.UpdateLoadingImage();
-                checkUpdate = true;
-            }
-            else
-            {
-                uclUpdate.Visible = false;
-            }
 #endif
 
             rtbInfo.AppendLine(Resources.AboutForm_AboutForm_Links, FontStyle.Bold, 13);
@@ -103,14 +90,11 @@ McoreD: {Links.McoreD}
 
             rtbInfo.AppendLine(Resources.AboutForm_AboutForm_Credits, FontStyle.Bold, 13);
             rtbInfo.AppendLine(@"Json.NET: https://github.com/JamesNK/Newtonsoft.Json
-SSH.NET: https://github.com/sshnet/SSH.NET
 Icons: http://p.yusukekamiyamane.com
 ImageListView: https://github.com/oozcitak/imagelistview
 FFmpeg: https://www.ffmpeg.org
 Recorder devices: https://github.com/rdp/screen-capture-recorder-to-video-windows-free
-FluentFTP: https://github.com/robinrodricks/FluentFTP
 ZXing.Net: https://github.com/micjahn/ZXing.Net
-MegaApiClient: https://github.com/gpailler/MegaApiClient
 Inno Setup Dependency Installer: https://github.com/DomGries/InnoDependencyInstaller
 Blob Emoji: http://blobs.gg
 ", FontStyle.Regular);
@@ -120,15 +104,9 @@ Blob Emoji: http://blobs.gg
             easterEgg = new EasterEggAboutAnimation(cLogo, this);
         }
 
-        private async void AboutForm_Shown(object sender, EventArgs e)
+        private void AboutForm_Shown(object sender, EventArgs e)
         {
             this.ForceActivate();
-
-            if (checkUpdate)
-            {
-                UpdateChecker updateChecker = Program.UpdateManager.CreateUpdateChecker();
-                await uclUpdate.CheckUpdate(updateChecker);
-            }
         }
 
         private void pbLogo_MouseDown(object sender, MouseEventArgs e)

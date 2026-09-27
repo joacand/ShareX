@@ -1,4 +1,4 @@
-﻿using ShareX.HelpersLib;
+using ShareX.HelpersLib;
 namespace ShareX
 {
     partial class ApplicationSettingsForm
@@ -63,14 +63,8 @@ namespace ShareX
             this.cbUseCustomTheme = new System.Windows.Forms.CheckBox();
             this.eiTheme = new ShareX.HelpersLib.ExportImportControl();
             this.tpIntegration = new System.Windows.Forms.TabPage();
-            this.gbFirefox = new System.Windows.Forms.GroupBox();
-            this.cbFirefoxAddonSupport = new System.Windows.Forms.CheckBox();
-            this.btnFirefoxOpenAddonPage = new System.Windows.Forms.Button();
             this.gbSteam = new System.Windows.Forms.GroupBox();
             this.cbSteamShowInApp = new System.Windows.Forms.CheckBox();
-            this.gbChrome = new System.Windows.Forms.GroupBox();
-            this.cbChromeExtensionSupport = new System.Windows.Forms.CheckBox();
-            this.btnChromeOpenExtensionPage = new System.Windows.Forms.Button();
             this.gbWindows = new System.Windows.Forms.GroupBox();
             this.cbEditWithShareX = new System.Windows.Forms.CheckBox();
             this.cbStartWithWindows = new System.Windows.Forms.CheckBox();
@@ -151,17 +145,6 @@ namespace ShareX
             this.cbPrintDontShowWindowsDialog = new System.Windows.Forms.CheckBox();
             this.cbDontShowPrintSettingDialog = new System.Windows.Forms.CheckBox();
             this.btnShowImagePrintSettings = new System.Windows.Forms.Button();
-            this.tpProxy = new System.Windows.Forms.TabPage();
-            this.cbProxyMethod = new System.Windows.Forms.ComboBox();
-            this.lblProxyMethod = new System.Windows.Forms.Label();
-            this.lblProxyHost = new System.Windows.Forms.Label();
-            this.txtProxyHost = new System.Windows.Forms.TextBox();
-            this.nudProxyPort = new System.Windows.Forms.NumericUpDown();
-            this.lblProxyPort = new System.Windows.Forms.Label();
-            this.lblProxyPassword = new System.Windows.Forms.Label();
-            this.txtProxyPassword = new System.Windows.Forms.TextBox();
-            this.lblProxyUsername = new System.Windows.Forms.Label();
-            this.txtProxyUsername = new System.Windows.Forms.TextBox();
             this.tpAdvanced = new System.Windows.Forms.TabPage();
             this.pgSettings = new System.Windows.Forms.PropertyGrid();
             this.tttvMain = new ShareX.HelpersLib.TabToTreeView();
@@ -169,9 +152,7 @@ namespace ShareX
             this.tpGeneral.SuspendLayout();
             this.tpTheme.SuspendLayout();
             this.tpIntegration.SuspendLayout();
-            this.gbFirefox.SuspendLayout();
             this.gbSteam.SuspendLayout();
-            this.gbChrome.SuspendLayout();
             this.gbWindows.SuspendLayout();
             this.tpPaths.SuspendLayout();
             this.tpSettings.SuspendLayout();
@@ -188,8 +169,6 @@ namespace ShareX
             this.gbRecentLinks.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudRecentTasksMaxCount)).BeginInit();
             this.tpPrint.SuspendLayout();
-            this.tpProxy.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudProxyPort)).BeginInit();
             this.tpAdvanced.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -205,7 +184,6 @@ namespace ShareX
             this.tcSettings.Controls.Add(this.tpClipboardFormats);
             this.tcSettings.Controls.Add(this.tpHistory);
             this.tcSettings.Controls.Add(this.tpPrint);
-            this.tcSettings.Controls.Add(this.tpProxy);
             this.tcSettings.Controls.Add(this.tpAdvanced);
             this.tcSettings.Name = "tcSettings";
             this.tcSettings.SelectedIndex = 0;
@@ -445,34 +423,10 @@ namespace ShareX
             // tpIntegration
             // 
             this.tpIntegration.BackColor = System.Drawing.SystemColors.Window;
-            this.tpIntegration.Controls.Add(this.gbFirefox);
             this.tpIntegration.Controls.Add(this.gbSteam);
-            this.tpIntegration.Controls.Add(this.gbChrome);
             this.tpIntegration.Controls.Add(this.gbWindows);
             resources.ApplyResources(this.tpIntegration, "tpIntegration");
             this.tpIntegration.Name = "tpIntegration";
-            // 
-            // gbFirefox
-            // 
-            this.gbFirefox.Controls.Add(this.cbFirefoxAddonSupport);
-            this.gbFirefox.Controls.Add(this.btnFirefoxOpenAddonPage);
-            resources.ApplyResources(this.gbFirefox, "gbFirefox");
-            this.gbFirefox.Name = "gbFirefox";
-            this.gbFirefox.TabStop = false;
-            // 
-            // cbFirefoxAddonSupport
-            // 
-            resources.ApplyResources(this.cbFirefoxAddonSupport, "cbFirefoxAddonSupport");
-            this.cbFirefoxAddonSupport.Name = "cbFirefoxAddonSupport";
-            this.cbFirefoxAddonSupport.UseVisualStyleBackColor = true;
-            this.cbFirefoxAddonSupport.CheckedChanged += new System.EventHandler(this.cbFirefoxAddonSupport_CheckedChanged);
-            // 
-            // btnFirefoxOpenAddonPage
-            // 
-            resources.ApplyResources(this.btnFirefoxOpenAddonPage, "btnFirefoxOpenAddonPage");
-            this.btnFirefoxOpenAddonPage.Name = "btnFirefoxOpenAddonPage";
-            this.btnFirefoxOpenAddonPage.UseVisualStyleBackColor = true;
-            this.btnFirefoxOpenAddonPage.Click += new System.EventHandler(this.btnFirefoxOpenAddonPage_Click);
             // 
             // gbSteam
             // 
@@ -487,28 +441,6 @@ namespace ShareX
             this.cbSteamShowInApp.Name = "cbSteamShowInApp";
             this.cbSteamShowInApp.UseVisualStyleBackColor = true;
             this.cbSteamShowInApp.CheckedChanged += new System.EventHandler(this.cbSteamShowInApp_CheckedChanged);
-            // 
-            // gbChrome
-            // 
-            this.gbChrome.Controls.Add(this.cbChromeExtensionSupport);
-            this.gbChrome.Controls.Add(this.btnChromeOpenExtensionPage);
-            resources.ApplyResources(this.gbChrome, "gbChrome");
-            this.gbChrome.Name = "gbChrome";
-            this.gbChrome.TabStop = false;
-            // 
-            // cbChromeExtensionSupport
-            // 
-            resources.ApplyResources(this.cbChromeExtensionSupport, "cbChromeExtensionSupport");
-            this.cbChromeExtensionSupport.Name = "cbChromeExtensionSupport";
-            this.cbChromeExtensionSupport.UseVisualStyleBackColor = true;
-            this.cbChromeExtensionSupport.CheckedChanged += new System.EventHandler(this.cbChromeExtensionSupport_CheckedChanged);
-            // 
-            // btnChromeOpenExtensionPage
-            // 
-            resources.ApplyResources(this.btnChromeOpenExtensionPage, "btnChromeOpenExtensionPage");
-            this.btnChromeOpenExtensionPage.Name = "btnChromeOpenExtensionPage";
-            this.btnChromeOpenExtensionPage.UseVisualStyleBackColor = true;
-            this.btnChromeOpenExtensionPage.Click += new System.EventHandler(this.btnChromeOpenExtensionPage_Click);
             // 
             // gbWindows
             // 
@@ -1147,85 +1079,6 @@ namespace ShareX
             this.btnShowImagePrintSettings.UseVisualStyleBackColor = true;
             this.btnShowImagePrintSettings.Click += new System.EventHandler(this.btnShowImagePrintSettings_Click);
             // 
-            // tpProxy
-            // 
-            this.tpProxy.BackColor = System.Drawing.SystemColors.Window;
-            this.tpProxy.Controls.Add(this.cbProxyMethod);
-            this.tpProxy.Controls.Add(this.lblProxyMethod);
-            this.tpProxy.Controls.Add(this.lblProxyHost);
-            this.tpProxy.Controls.Add(this.txtProxyHost);
-            this.tpProxy.Controls.Add(this.nudProxyPort);
-            this.tpProxy.Controls.Add(this.lblProxyPort);
-            this.tpProxy.Controls.Add(this.lblProxyPassword);
-            this.tpProxy.Controls.Add(this.txtProxyPassword);
-            this.tpProxy.Controls.Add(this.lblProxyUsername);
-            this.tpProxy.Controls.Add(this.txtProxyUsername);
-            resources.ApplyResources(this.tpProxy, "tpProxy");
-            this.tpProxy.Name = "tpProxy";
-            // 
-            // cbProxyMethod
-            // 
-            this.cbProxyMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbProxyMethod.FormattingEnabled = true;
-            resources.ApplyResources(this.cbProxyMethod, "cbProxyMethod");
-            this.cbProxyMethod.Name = "cbProxyMethod";
-            this.cbProxyMethod.SelectedIndexChanged += new System.EventHandler(this.cbProxyMethod_SelectedIndexChanged);
-            // 
-            // lblProxyMethod
-            // 
-            resources.ApplyResources(this.lblProxyMethod, "lblProxyMethod");
-            this.lblProxyMethod.Name = "lblProxyMethod";
-            // 
-            // lblProxyHost
-            // 
-            resources.ApplyResources(this.lblProxyHost, "lblProxyHost");
-            this.lblProxyHost.Name = "lblProxyHost";
-            // 
-            // txtProxyHost
-            // 
-            resources.ApplyResources(this.txtProxyHost, "txtProxyHost");
-            this.txtProxyHost.Name = "txtProxyHost";
-            this.txtProxyHost.TextChanged += new System.EventHandler(this.txtProxyHost_TextChanged);
-            // 
-            // nudProxyPort
-            // 
-            resources.ApplyResources(this.nudProxyPort, "nudProxyPort");
-            this.nudProxyPort.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.nudProxyPort.Name = "nudProxyPort";
-            this.nudProxyPort.ValueChanged += new System.EventHandler(this.nudProxyPort_ValueChanged);
-            // 
-            // lblProxyPort
-            // 
-            resources.ApplyResources(this.lblProxyPort, "lblProxyPort");
-            this.lblProxyPort.Name = "lblProxyPort";
-            // 
-            // lblProxyPassword
-            // 
-            resources.ApplyResources(this.lblProxyPassword, "lblProxyPassword");
-            this.lblProxyPassword.Name = "lblProxyPassword";
-            // 
-            // txtProxyPassword
-            // 
-            resources.ApplyResources(this.txtProxyPassword, "txtProxyPassword");
-            this.txtProxyPassword.Name = "txtProxyPassword";
-            this.txtProxyPassword.UseSystemPasswordChar = true;
-            this.txtProxyPassword.TextChanged += new System.EventHandler(this.txtProxyPassword_TextChanged);
-            // 
-            // lblProxyUsername
-            // 
-            resources.ApplyResources(this.lblProxyUsername, "lblProxyUsername");
-            this.lblProxyUsername.Name = "lblProxyUsername";
-            // 
-            // txtProxyUsername
-            // 
-            resources.ApplyResources(this.txtProxyUsername, "txtProxyUsername");
-            this.txtProxyUsername.Name = "txtProxyUsername";
-            this.txtProxyUsername.TextChanged += new System.EventHandler(this.txtProxyUsername_TextChanged);
-            // 
             // tpAdvanced
             // 
             this.tpAdvanced.BackColor = System.Drawing.SystemColors.Window;
@@ -1269,12 +1122,8 @@ namespace ShareX
             this.tpTheme.ResumeLayout(false);
             this.tpTheme.PerformLayout();
             this.tpIntegration.ResumeLayout(false);
-            this.gbFirefox.ResumeLayout(false);
-            this.gbFirefox.PerformLayout();
             this.gbSteam.ResumeLayout(false);
             this.gbSteam.PerformLayout();
-            this.gbChrome.ResumeLayout(false);
-            this.gbChrome.PerformLayout();
             this.gbWindows.ResumeLayout(false);
             this.gbWindows.PerformLayout();
             this.tpPaths.ResumeLayout(false);
@@ -1301,9 +1150,6 @@ namespace ShareX
             ((System.ComponentModel.ISupportInitialize)(this.nudRecentTasksMaxCount)).EndInit();
             this.tpPrint.ResumeLayout(false);
             this.tpPrint.PerformLayout();
-            this.tpProxy.ResumeLayout(false);
-            this.tpProxy.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudProxyPort)).EndInit();
             this.tpAdvanced.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -1315,7 +1161,6 @@ namespace ShareX
 
         private System.Windows.Forms.TabControl tcSettings;
         private System.Windows.Forms.TabPage tpGeneral;
-        private System.Windows.Forms.TabPage tpProxy;
         private System.Windows.Forms.CheckBox cbSendToMenu;
         private System.Windows.Forms.Button btnOpenPersonalFolderPath;
         private System.Windows.Forms.CheckBox cbShowTray;
@@ -1327,17 +1172,7 @@ namespace ShareX
         private System.Windows.Forms.TabPage tpPaths;
         private System.Windows.Forms.Button btnBrowseCustomScreenshotsPath;
         private System.Windows.Forms.TextBox txtCustomScreenshotsPath;
-        private System.Windows.Forms.Label lblProxyHost;
-        private System.Windows.Forms.TextBox txtProxyHost;
-        private System.Windows.Forms.NumericUpDown nudProxyPort;
-        private System.Windows.Forms.Label lblProxyPort;
-        private System.Windows.Forms.Label lblProxyPassword;
-        private System.Windows.Forms.TextBox txtProxyPassword;
-        private System.Windows.Forms.Label lblProxyUsername;
-        private System.Windows.Forms.TextBox txtProxyUsername;
         private System.Windows.Forms.CheckBox cbShellContextMenu;
-        private System.Windows.Forms.ComboBox cbProxyMethod;
-        private System.Windows.Forms.Label lblProxyMethod;
         private System.Windows.Forms.Button btnClipboardFormatRemove;
         private System.Windows.Forms.Button btnClipboardFormatAdd;
         private HelpersLib.MyListView lvClipboardFormats;
@@ -1365,7 +1200,6 @@ namespace ShareX
         private MenuButton btnLanguages;
         private System.Windows.Forms.ContextMenuStrip cmsLanguages;
         private System.Windows.Forms.GroupBox gbWindows;
-        private System.Windows.Forms.GroupBox gbChrome;
         private System.Windows.Forms.CheckBox cbSteamShowInApp;
         private System.Windows.Forms.TabPage tpIntegration;
         private System.Windows.Forms.GroupBox gbSteam;
@@ -1391,11 +1225,6 @@ namespace ShareX
         private System.Windows.Forms.ComboBox cbTrayMiddleClickAction;
         private System.Windows.Forms.ComboBox cbTrayLeftDoubleClickAction;
         private System.Windows.Forms.ComboBox cbTrayLeftClickAction;
-        private System.Windows.Forms.Button btnChromeOpenExtensionPage;
-        private System.Windows.Forms.GroupBox gbFirefox;
-        private System.Windows.Forms.Button btnFirefoxOpenAddonPage;
-        private System.Windows.Forms.CheckBox cbChromeExtensionSupport;
-        private System.Windows.Forms.CheckBox cbFirefoxAddonSupport;
         private System.Windows.Forms.Button btnResetSettings;
         private System.Windows.Forms.CheckBox cbEditWithShareX;
         private System.Windows.Forms.Button btnCheckDevBuild;

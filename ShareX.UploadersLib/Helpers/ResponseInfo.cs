@@ -33,7 +33,7 @@ namespace ShareX.UploadersLib
     {
         public HttpStatusCode StatusCode { get; set; }
         public string StatusDescription { get; set; }
-        public bool IsSuccess => WebHelpers.IsSuccessStatusCode(StatusCode);
+        public bool IsSuccess => (int)StatusCode >= 200 && (int)StatusCode <= 299;
         public string ResponseURL { get; set; }
         public WebHeaderCollection Headers { get; set; }
         public string ResponseText { get; set; }

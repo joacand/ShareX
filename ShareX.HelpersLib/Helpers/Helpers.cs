@@ -527,37 +527,6 @@ namespace ShareX.HelpersLib
             }
         }
 
-        public static string SendPing(string host)
-        {
-            return SendPing(host, 1);
-        }
-
-        public static string SendPing(string host, int count)
-        {
-            string[] status = new string[count];
-
-            using (Ping ping = new Ping())
-            {
-                PingReply reply;
-                //byte[] buffer = Encoding.ASCII.GetBytes(new string('a', 32));
-                for (int i = 0; i < count; i++)
-                {
-                    reply = ping.Send(host, 3000);
-                    if (reply.Status == IPStatus.Success)
-                    {
-                        status[i] = reply.RoundtripTime.ToString() + " ms";
-                    }
-                    else
-                    {
-                        status[i] = "Timeout";
-                    }
-                    Thread.Sleep(100);
-                }
-            }
-
-            return string.Join(", ", status);
-        }
-
         public static void SetDefaultUICulture(CultureInfo culture)
         {
             Type type = typeof(CultureInfo);

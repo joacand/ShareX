@@ -92,8 +92,6 @@ namespace ShareX
             CodeMenu.Create<CodeMenuEntryFilename>(txtSaveImageSubFolderPattern, CodeMenuEntryFilename.t, CodeMenuEntryFilename.pn, CodeMenuEntryFilename.i, CodeMenuEntryFilename.width, CodeMenuEntryFilename.height, CodeMenuEntryFilename.n);
             CodeMenu.Create<CodeMenuEntryFilename>(txtSaveImageSubFolderPatternWindow, CodeMenuEntryFilename.i, CodeMenuEntryFilename.n);
 
-            cbProxyMethod.Items.AddRange(Helpers.GetLocalizedEnumDescriptions<ProxyMethod>());
-
             UpdateControls();
         }
 
@@ -151,16 +149,10 @@ namespace ShareX
             cbShellContextMenu.Visible = false;
             cbEditWithShareX.Visible = false;
             cbSendToMenu.Visible = false;
-            gbChrome.Visible = false;
-            gbFirefox.Visible = false;
 #else
             cbShellContextMenu.Checked = IntegrationHelpers.CheckShellContextMenuButton();
             cbEditWithShareX.Checked = IntegrationHelpers.CheckEditShellContextMenuButton();
             cbSendToMenu.Checked = IntegrationHelpers.CheckSendToMenuButton();
-            cbChromeExtensionSupport.Checked = IntegrationHelpers.CheckChromeExtensionSupport();
-            btnChromeOpenExtensionPage.Enabled = cbChromeExtensionSupport.Checked;
-            cbFirefoxAddonSupport.Checked = IntegrationHelpers.CheckFirefoxAddonSupport();
-            btnFirefoxOpenAddonPage.Enabled = cbFirefoxAddonSupport.Checked;
 #endif
 
 #if STEAM
@@ -217,14 +209,6 @@ namespace ShareX
             cbPrintDontShowWindowsDialog.Checked = !Program.Settings.PrintSettings.ShowPrintDialog;
             txtDefaultPrinterOverride.Text = Program.Settings.PrintSettings.DefaultPrinterOverride;
             lblDefaultPrinterOverride.Visible = txtDefaultPrinterOverride.Visible = !Program.Settings.PrintSettings.ShowPrintDialog;
-
-            // Proxy
-            cbProxyMethod.SelectedIndex = (int)Program.Settings.ProxySettings.ProxyMethod;
-            txtProxyUsername.Text = Program.Settings.ProxySettings.Username;
-            txtProxyPassword.Text = Program.Settings.ProxySettings.Password;
-            txtProxyHost.Text = Program.Settings.ProxySettings.Host ?? "";
-            nudProxyPort.SetValue(Program.Settings.ProxySettings.Port);
-            UpdateProxyControls();
 
             // Advanced
             pgSettings.SelectedObject = Program.Settings;
@@ -287,23 +271,6 @@ namespace ShareX
             }
 
             ready = true;
-        }
-
-        private void UpdateProxyControls()
-        {
-            switch (Program.Settings.ProxySettings.ProxyMethod)
-            {
-                case ProxyMethod.None:
-                    txtProxyUsername.Enabled = txtProxyPassword.Enabled = txtProxyHost.Enabled = nudProxyPort.Enabled = false;
-                    break;
-                case ProxyMethod.Manual:
-                    txtProxyUsername.Enabled = txtProxyPassword.Enabled = txtProxyHost.Enabled = nudProxyPort.Enabled = true;
-                    break;
-                case ProxyMethod.Automatic:
-                    txtProxyUsername.Enabled = txtProxyPassword.Enabled = true;
-                    txtProxyHost.Enabled = nudProxyPort.Enabled = false;
-                    break;
-            }
         }
 
         private void UpdatePersonalFolderPathPreview()
@@ -600,34 +567,6 @@ namespace ShareX
             {
                 IntegrationHelpers.CreateSendToMenuButton(cbSendToMenu.Checked);
             }
-        }
-
-        private void cbChromeExtensionSupport_CheckedChanged(object sender, EventArgs e)
-        {
-            if (ready)
-            {
-                IntegrationHelpers.CreateChromeExtensionSupport(cbChromeExtensionSupport.Checked);
-                btnChromeOpenExtensionPage.Enabled = cbChromeExtensionSupport.Checked;
-            }
-        }
-
-        private void btnChromeOpenExtensionPage_Click(object sender, EventArgs e)
-        {
-            URLHelpers.OpenURL("https://chrome.google.com/webstore/detail/sharex/nlkoigbdolhchiicbonbihbphgamnaoc");
-        }
-
-        private void cbFirefoxAddonSupport_CheckedChanged(object sender, EventArgs e)
-        {
-            if (ready)
-            {
-                IntegrationHelpers.CreateFirefoxAddonSupport(cbFirefoxAddonSupport.Checked);
-                btnFirefoxOpenAddonPage.Enabled = cbFirefoxAddonSupport.Checked;
-            }
-        }
-
-        private void btnFirefoxOpenAddonPage_Click(object sender, EventArgs e)
-        {
-            URLHelpers.OpenURL("https://addons.mozilla.org/en-US/firefox/addon/sharex/");
         }
 
         private void cbSteamShowInApp_CheckedChanged(object sender, EventArgs e)
@@ -1036,43 +975,5 @@ namespace ShareX
         }
 
         #endregion Print
-
-        #region Proxy
-
-        private void cbProxyMethod_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Program.Settings.ProxySettings.ProxyMethod = (ProxyMethod)cbProxyMethod.SelectedIndex;
-
-            if (Program.Settings.ProxySettings.ProxyMethod == ProxyMethod.Automatic)
-            {
-                Program.Settings.ProxySettings.IsValidProxy();
-                txtProxyHost.Text = Program.Settings.ProxySettings.Host ?? "";
-                nudProxyPort.SetValue(Program.Settings.ProxySettings.Port);
-            }
-
-            UpdateProxyControls();
-        }
-
-        private void txtProxyUsername_TextChanged(object sender, EventArgs e)
-        {
-            Program.Settings.ProxySettings.Username = txtProxyUsername.Text;
-        }
-
-        private void txtProxyPassword_TextChanged(object sender, EventArgs e)
-        {
-            Program.Settings.ProxySettings.Password = txtProxyPassword.Text;
-        }
-
-        private void txtProxyHost_TextChanged(object sender, EventArgs e)
-        {
-            Program.Settings.ProxySettings.Host = txtProxyHost.Text;
-        }
-
-        private void nudProxyPort_ValueChanged(object sender, EventArgs e)
-        {
-            Program.Settings.ProxySettings.Port = (int)nudProxyPort.Value;
-        }
-
-        #endregion Proxy
     }
 }

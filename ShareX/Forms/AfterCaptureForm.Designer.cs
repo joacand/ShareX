@@ -1,4 +1,4 @@
-﻿namespace ShareX
+namespace ShareX
 {
     partial class AfterCaptureForm
     {
@@ -36,8 +36,6 @@
             this.tpAfterCapture = new System.Windows.Forms.TabPage();
             this.lvAfterCaptureTasks = new ShareX.HelpersLib.MyListView();
             this.chAfterCapture = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tpBeforeUpload = new System.Windows.Forms.TabPage();
-            this.ucBeforeUpload = new ShareX.BeforeUploadControl();
             this.tpAfterUpload = new System.Windows.Forms.TabPage();
             this.lvAfterUploadTasks = new ShareX.HelpersLib.MyListView();
             this.chAfterUpload = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -46,7 +44,6 @@
             this.pbImage = new ShareX.HelpersLib.MyPictureBox();
             this.tcTasks.SuspendLayout();
             this.tpAfterCapture.SuspendLayout();
-            this.tpBeforeUpload.SuspendLayout();
             this.tpAfterUpload.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,7 +72,6 @@
             // 
             resources.ApplyResources(this.tcTasks, "tcTasks");
             this.tcTasks.Controls.Add(this.tpAfterCapture);
-            this.tcTasks.Controls.Add(this.tpBeforeUpload);
             this.tcTasks.Controls.Add(this.tpAfterUpload);
             this.tcTasks.Name = "tcTasks";
             this.tcTasks.SelectedIndex = 0;
@@ -103,18 +99,6 @@
             this.lvAfterCaptureTasks.View = System.Windows.Forms.View.Details;
             this.lvAfterCaptureTasks.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvAfterCaptureTasks_ItemSelectionChanged);
             this.lvAfterCaptureTasks.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lvAfterCaptureTasks_MouseDown);
-            // 
-            // tpBeforeUpload
-            // 
-            this.tpBeforeUpload.BackColor = System.Drawing.SystemColors.Window;
-            this.tpBeforeUpload.Controls.Add(this.ucBeforeUpload);
-            resources.ApplyResources(this.tpBeforeUpload, "tpBeforeUpload");
-            this.tpBeforeUpload.Name = "tpBeforeUpload";
-            // 
-            // ucBeforeUpload
-            // 
-            resources.ApplyResources(this.ucBeforeUpload, "ucBeforeUpload");
-            this.ucBeforeUpload.Name = "ucBeforeUpload";
             // 
             // tpAfterUpload
             // 
@@ -183,7 +167,6 @@
             this.Shown += new System.EventHandler(this.AfterCaptureForm_Shown);
             this.tcTasks.ResumeLayout(false);
             this.tpAfterCapture.ResumeLayout(false);
-            this.tpBeforeUpload.ResumeLayout(false);
             this.tpAfterUpload.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -198,8 +181,6 @@
         private System.Windows.Forms.Button btnCopy;
         private System.Windows.Forms.TabControl tcTasks;
         private System.Windows.Forms.TabPage tpAfterCapture;
-        private System.Windows.Forms.TabPage tpBeforeUpload;
-        private BeforeUploadControl ucBeforeUpload;
         private System.Windows.Forms.Label lblFileName;
         private System.Windows.Forms.TextBox txtFileName;
         private System.Windows.Forms.TabPage tpAfterUpload;
