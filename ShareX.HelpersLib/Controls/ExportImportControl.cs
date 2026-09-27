@@ -235,33 +235,5 @@ namespace ShareX.HelpersLib
                 }
             }
         }
-
-        private async void tsmiImportURL_Click(object sender, EventArgs e)
-        {
-            string url = InputBox.Show(Resources.ExportImportControl_tsmiImportURL_Click_URL_to_download_settings_from);
-
-            if (!string.IsNullOrEmpty(url))
-            {
-                btnImport.Enabled = false;
-
-                string json = null;
-
-                try
-                {
-                    json = await WebHelpers.DownloadStringAsync(url);
-                }
-                catch (Exception ex)
-                {
-                    DebugHelper.WriteException(ex);
-                    MessageBox.Show(Resources.Helpers_DownloadString_Download_failed_ + "\r\n" + ex, "ShareX - " + Resources.Error,
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                OnImportRequested(json);
-                OnImportCompleted();
-
-                btnImport.Enabled = true;
-            }
-        }
     }
 }

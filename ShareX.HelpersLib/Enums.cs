@@ -88,14 +88,6 @@ namespace ShareX.HelpersLib
         Inside
     }
 
-    public enum DownloaderFormStatus
-    {
-        Waiting,
-        DownloadStarted,
-        DownloadCompleted,
-        InstallStarted
-    }
-
     public enum InstallType
     {
         Default,

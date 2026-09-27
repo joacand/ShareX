@@ -147,21 +147,13 @@ namespace ShareX
         ShowInExplorer = 1 << 14,
         ScanQRCode = 1 << 15,
         DoOCR = 1 << 16,
-        ShowBeforeUploadWindow = 1 << 17,
-        UploadImageToHost = 1 << 18,
-        DeleteFile = 1 << 19
+        DeleteFile = 1 << 17
     }
 
     [Flags]
-    public enum AfterUploadTasks // Localized
+    public enum AfterUploadTasks
     {
-        None = 0,
-        ShowAfterUploadWindow = 1,
-        UseURLShortener = 1 << 1,
-        ShareURL = 1 << 2,
-        CopyURLToClipboard = 1 << 3,
-        OpenURL = 1 << 4,
-        ShowQRCode = 1 << 5
+        None = 0
     }
 
     public enum CaptureType
@@ -419,16 +411,6 @@ namespace ShareX
     {
         ListView,
         ThumbnailView
-    }
-
-    public enum NativeMessagingAction
-    {
-        None,
-        UploadImage,
-        UploadVideo,
-        UploadAudio,
-        UploadText,
-        ShortenURL
     }
 
     public enum NotificationSound

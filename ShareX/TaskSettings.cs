@@ -53,19 +53,19 @@ namespace ShareX
         public HotkeyType Job = HotkeyType.None;
 
         public bool UseDefaultAfterCaptureJob = true;
-        public AfterCaptureTasks AfterCaptureJob = AfterCaptureTasks.CopyImageToClipboard | AfterCaptureTasks.SaveImageToFile | AfterCaptureTasks.UploadImageToHost;
+        public AfterCaptureTasks AfterCaptureJob = AfterCaptureTasks.CopyImageToClipboard | AfterCaptureTasks.SaveImageToFile;
 
         public bool UseDefaultAfterUploadJob = true;
-        public AfterUploadTasks AfterUploadJob = AfterUploadTasks.CopyURLToClipboard;
+        public AfterUploadTasks AfterUploadJob = AfterUploadTasks.None;
 
         public bool UseDefaultDestinations = true;
-        public ImageDestination ImageDestination = ImageDestination.Imgur;
-        public FileDestination ImageFileDestination = FileDestination.Dropbox;
-        public TextDestination TextDestination = TextDestination.Pastebin;
-        public FileDestination TextFileDestination = FileDestination.Dropbox;
-        public FileDestination FileDestination = FileDestination.Dropbox;
-        public UrlShortenerType URLShortenerDestination = UrlShortenerType.BITLY;
-        public URLSharingServices URLSharingServiceDestination = URLSharingServices.Twitter;
+        public ImageDestination ImageDestination = ImageDestination.CustomImageUploader;
+        public FileDestination ImageFileDestination = FileDestination.CustomFileUploader;
+        public TextDestination TextDestination = TextDestination.CustomTextUploader;
+        public FileDestination TextFileDestination = FileDestination.CustomFileUploader;
+        public FileDestination FileDestination = FileDestination.CustomFileUploader;
+        public UrlShortenerType URLShortenerDestination = UrlShortenerType.CustomURLShortener;
+        public URLSharingServices URLSharingServiceDestination = URLSharingServices.GoogleImageSearch;
 
         public bool OverrideFTP = false;
         public int FTPIndex = 0;

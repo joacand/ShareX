@@ -27,13 +27,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace ShareX.HelpersLib
@@ -49,38 +47,6 @@ namespace ShareX.HelpersLib
 
         public static void OpenURL(string url)
         {
-            if (!string.IsNullOrEmpty(url))
-            {
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        using (Process process = new Process())
-                        {
-                            ProcessStartInfo psi = new ProcessStartInfo();
-
-                            if (!string.IsNullOrEmpty(HelpersOptions.BrowserPath))
-                            {
-                                psi.FileName = HelpersOptions.BrowserPath;
-                                psi.Arguments = url;
-                            }
-                            else
-                            {
-                                psi.FileName = url;
-                            }
-
-                            process.StartInfo = psi;
-                            process.Start();
-                        }
-
-                        DebugHelper.WriteLine("URL opened: " + url);
-                    }
-                    catch (Exception e)
-                    {
-                        DebugHelper.WriteException(e, $"OpenURL({url}) failed");
-                    }
-                });
-            }
         }
 
         public static string URLEncode(string text, bool isPath = false, bool ignoreEmoji = false)

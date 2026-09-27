@@ -92,8 +92,6 @@ namespace ShareX
             CodeMenu.Create<CodeMenuEntryFilename>(txtSaveImageSubFolderPattern, CodeMenuEntryFilename.t, CodeMenuEntryFilename.pn, CodeMenuEntryFilename.i, CodeMenuEntryFilename.width, CodeMenuEntryFilename.height, CodeMenuEntryFilename.n);
             CodeMenu.Create<CodeMenuEntryFilename>(txtSaveImageSubFolderPatternWindow, CodeMenuEntryFilename.i, CodeMenuEntryFilename.n);
 
-            cbProxyMethod.Items.AddRange(Helpers.GetLocalizedEnumDescriptions<ProxyMethod>());
-
             UpdateControls();
         }
 
@@ -151,16 +149,10 @@ namespace ShareX
             cbShellContextMenu.Visible = false;
             cbEditWithShareX.Visible = false;
             cbSendToMenu.Visible = false;
-            gbChrome.Visible = false;
-            gbFirefox.Visible = false;
 #else
             cbShellContextMenu.Checked = IntegrationHelpers.CheckShellContextMenuButton();
             cbEditWithShareX.Checked = IntegrationHelpers.CheckEditShellContextMenuButton();
             cbSendToMenu.Checked = IntegrationHelpers.CheckSendToMenuButton();
-            cbChromeExtensionSupport.Checked = IntegrationHelpers.CheckChromeExtensionSupport();
-            btnChromeOpenExtensionPage.Enabled = cbChromeExtensionSupport.Checked;
-            cbFirefoxAddonSupport.Checked = IntegrationHelpers.CheckFirefoxAddonSupport();
-            btnFirefoxOpenAddonPage.Enabled = cbFirefoxAddonSupport.Checked;
 #endif
 
 #if STEAM
@@ -202,36 +194,6 @@ namespace ShareX
                 AddClipboardFormat(cf);
             }
 
-            // Upload
-            nudUploadLimit.SetValue(Program.Settings.UploadLimit);
-
-            cbBufferSize.Items.Clear();
-            int maxBufferSizePower = 14;
-            for (int i = 0; i < maxBufferSizePower; i++)
-            {
-                string size = ((long)(Math.Pow(2, i) * 1024)).ToSizeString(Program.Settings.BinaryUnits, 0);
-                cbBufferSize.Items.Add(size);
-            }
-            cbBufferSize.SelectedIndex = Program.Settings.BufferSizePower.Clamp(0, maxBufferSizePower);
-
-            nudRetryUpload.SetValue(Program.Settings.MaxUploadFailRetry);
-            cbUseSecondaryUploaders.Checked = Program.Settings.UseSecondaryUploaders;
-
-            Program.Settings.SecondaryImageUploaders.AddRange(Helpers.GetEnums<ImageDestination>().Where(n => Program.Settings.SecondaryImageUploaders.All(e => e != n)));
-            Program.Settings.SecondaryTextUploaders.AddRange(Helpers.GetEnums<TextDestination>().Where(n => Program.Settings.SecondaryTextUploaders.All(e => e != n)));
-            Program.Settings.SecondaryFileUploaders.AddRange(Helpers.GetEnums<FileDestination>().Where(n => Program.Settings.SecondaryFileUploaders.All(e => e != n)));
-
-            Program.Settings.SecondaryImageUploaders.Where(n => Helpers.GetEnums<ImageDestination>().All(e => e != n)).ForEach(x => Program.Settings.SecondaryImageUploaders.Remove(x));
-            Program.Settings.SecondaryTextUploaders.Where(n => Helpers.GetEnums<TextDestination>().All(e => e != n)).ForEach(x => Program.Settings.SecondaryTextUploaders.Remove(x));
-            Program.Settings.SecondaryFileUploaders.Where(n => Helpers.GetEnums<FileDestination>().All(e => e != n)).ForEach(x => Program.Settings.SecondaryFileUploaders.Remove(x));
-
-            lvSecondaryImageUploaders.Items.Clear();
-            Program.Settings.SecondaryImageUploaders.ForEach<ImageDestination>(x => lvSecondaryImageUploaders.Items.Add(new ListViewItem(x.GetLocalizedDescription()) { Tag = x }));
-            lvSecondaryTextUploaders.Items.Clear();
-            Program.Settings.SecondaryTextUploaders.ForEach<TextDestination>(x => lvSecondaryTextUploaders.Items.Add(new ListViewItem(x.GetLocalizedDescription()) { Tag = x }));
-            lvSecondaryFileUploaders.Items.Clear();
-            Program.Settings.SecondaryFileUploaders.ForEach<FileDestination>(x => lvSecondaryFileUploaders.Items.Add(new ListViewItem(x.GetLocalizedDescription()) { Tag = x }));
-
             // History
             cbHistorySaveTasks.Checked = Program.Settings.HistorySaveTasks;
             cbHistoryCheckURL.Checked = Program.Settings.HistoryCheckURL;
@@ -247,14 +209,6 @@ namespace ShareX
             cbPrintDontShowWindowsDialog.Checked = !Program.Settings.PrintSettings.ShowPrintDialog;
             txtDefaultPrinterOverride.Text = Program.Settings.PrintSettings.DefaultPrinterOverride;
             lblDefaultPrinterOverride.Visible = txtDefaultPrinterOverride.Visible = !Program.Settings.PrintSettings.ShowPrintDialog;
-
-            // Proxy
-            cbProxyMethod.SelectedIndex = (int)Program.Settings.ProxySettings.ProxyMethod;
-            txtProxyUsername.Text = Program.Settings.ProxySettings.Username;
-            txtProxyPassword.Text = Program.Settings.ProxySettings.Password;
-            txtProxyHost.Text = Program.Settings.ProxySettings.Host ?? "";
-            nudProxyPort.SetValue(Program.Settings.ProxySettings.Port);
-            UpdateProxyControls();
 
             // Advanced
             pgSettings.SelectedObject = Program.Settings;
@@ -317,23 +271,6 @@ namespace ShareX
             }
 
             ready = true;
-        }
-
-        private void UpdateProxyControls()
-        {
-            switch (Program.Settings.ProxySettings.ProxyMethod)
-            {
-                case ProxyMethod.None:
-                    txtProxyUsername.Enabled = txtProxyPassword.Enabled = txtProxyHost.Enabled = nudProxyPort.Enabled = false;
-                    break;
-                case ProxyMethod.Manual:
-                    txtProxyUsername.Enabled = txtProxyPassword.Enabled = txtProxyHost.Enabled = nudProxyPort.Enabled = true;
-                    break;
-                case ProxyMethod.Automatic:
-                    txtProxyUsername.Enabled = txtProxyPassword.Enabled = true;
-                    txtProxyHost.Enabled = nudProxyPort.Enabled = false;
-                    break;
-            }
         }
 
         private void UpdatePersonalFolderPathPreview()
@@ -630,34 +567,6 @@ namespace ShareX
             {
                 IntegrationHelpers.CreateSendToMenuButton(cbSendToMenu.Checked);
             }
-        }
-
-        private void cbChromeExtensionSupport_CheckedChanged(object sender, EventArgs e)
-        {
-            if (ready)
-            {
-                IntegrationHelpers.CreateChromeExtensionSupport(cbChromeExtensionSupport.Checked);
-                btnChromeOpenExtensionPage.Enabled = cbChromeExtensionSupport.Checked;
-            }
-        }
-
-        private void btnChromeOpenExtensionPage_Click(object sender, EventArgs e)
-        {
-            URLHelpers.OpenURL("https://chrome.google.com/webstore/detail/sharex/nlkoigbdolhchiicbonbihbphgamnaoc");
-        }
-
-        private void cbFirefoxAddonSupport_CheckedChanged(object sender, EventArgs e)
-        {
-            if (ready)
-            {
-                IntegrationHelpers.CreateFirefoxAddonSupport(cbFirefoxAddonSupport.Checked);
-                btnFirefoxOpenAddonPage.Enabled = cbFirefoxAddonSupport.Checked;
-            }
-        }
-
-        private void btnFirefoxOpenAddonPage_Click(object sender, EventArgs e)
-        {
-            URLHelpers.OpenURL("https://addons.mozilla.org/en-US/firefox/addon/sharex/");
         }
 
         private void cbSteamShowInApp_CheckedChanged(object sender, EventArgs e)
@@ -999,37 +908,6 @@ namespace ShareX
 
         #endregion
 
-        #region Upload
-
-        private void nudUploadLimit_ValueChanged(object sender, EventArgs e)
-        {
-            Program.Settings.UploadLimit = (int)nudUploadLimit.Value;
-        }
-
-        private void cbBufferSize_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Program.Settings.BufferSizePower = cbBufferSize.SelectedIndex;
-        }
-
-        private void nudRetryUpload_ValueChanged(object sender, EventArgs e)
-        {
-            Program.Settings.MaxUploadFailRetry = (int)nudRetryUpload.Value;
-        }
-
-        private void cbUseSecondaryUploaders_CheckedChanged(object sender, EventArgs e)
-        {
-            Program.Settings.UseSecondaryUploaders = cbUseSecondaryUploaders.Checked;
-        }
-
-        private void lvSecondaryUploaders_MouseUp(object sender, MouseEventArgs e)
-        {
-            Program.Settings.SecondaryImageUploaders = lvSecondaryImageUploaders.Items.Cast<ListViewItem>().Select(x => (ImageDestination)x.Tag).ToList();
-            Program.Settings.SecondaryTextUploaders = lvSecondaryTextUploaders.Items.Cast<ListViewItem>().Select(x => (TextDestination)x.Tag).ToList();
-            Program.Settings.SecondaryFileUploaders = lvSecondaryFileUploaders.Items.Cast<ListViewItem>().Select(x => (FileDestination)x.Tag).ToList();
-        }
-
-        #endregion Upload
-
         #region History
 
         private void cbHistorySaveTasks_CheckedChanged(object sender, EventArgs e)
@@ -1097,43 +975,5 @@ namespace ShareX
         }
 
         #endregion Print
-
-        #region Proxy
-
-        private void cbProxyMethod_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Program.Settings.ProxySettings.ProxyMethod = (ProxyMethod)cbProxyMethod.SelectedIndex;
-
-            if (Program.Settings.ProxySettings.ProxyMethod == ProxyMethod.Automatic)
-            {
-                Program.Settings.ProxySettings.IsValidProxy();
-                txtProxyHost.Text = Program.Settings.ProxySettings.Host ?? "";
-                nudProxyPort.SetValue(Program.Settings.ProxySettings.Port);
-            }
-
-            UpdateProxyControls();
-        }
-
-        private void txtProxyUsername_TextChanged(object sender, EventArgs e)
-        {
-            Program.Settings.ProxySettings.Username = txtProxyUsername.Text;
-        }
-
-        private void txtProxyPassword_TextChanged(object sender, EventArgs e)
-        {
-            Program.Settings.ProxySettings.Password = txtProxyPassword.Text;
-        }
-
-        private void txtProxyHost_TextChanged(object sender, EventArgs e)
-        {
-            Program.Settings.ProxySettings.Host = txtProxyHost.Text;
-        }
-
-        private void nudProxyPort_ValueChanged(object sender, EventArgs e)
-        {
-            Program.Settings.ProxySettings.Port = (int)nudProxyPort.Value;
-        }
-
-        #endregion Proxy
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ShareX.HelpersLib
+namespace ShareX.HelpersLib
 {
     partial class DNSChangerForm
     {
@@ -40,8 +40,6 @@
             this.cbDNSType = new System.Windows.Forms.ComboBox();
             this.lblDNS = new System.Windows.Forms.Label();
             this.cbAutomatic = new System.Windows.Forms.CheckBox();
-            this.btnPingPrimary = new System.Windows.Forms.Button();
-            this.btnPingSecondary = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cbAdapters
@@ -113,28 +111,12 @@
             this.cbAutomatic.UseVisualStyleBackColor = true;
             this.cbAutomatic.CheckedChanged += new System.EventHandler(this.cbAutomatic_CheckedChanged);
             // 
-            // btnPingPrimary
-            // 
-            resources.ApplyResources(this.btnPingPrimary, "btnPingPrimary");
-            this.btnPingPrimary.Name = "btnPingPrimary";
-            this.btnPingPrimary.UseVisualStyleBackColor = true;
-            this.btnPingPrimary.Click += new System.EventHandler(this.btnPingPrimary_Click);
-            // 
-            // btnPingSecondary
-            // 
-            resources.ApplyResources(this.btnPingSecondary, "btnPingSecondary");
-            this.btnPingSecondary.Name = "btnPingSecondary";
-            this.btnPingSecondary.UseVisualStyleBackColor = true;
-            this.btnPingSecondary.Click += new System.EventHandler(this.btnPingSecondary_Click);
-            // 
             // DNSChangerForm
             // 
             this.AcceptButton = this.btnSave;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.Controls.Add(this.btnPingSecondary);
-            this.Controls.Add(this.btnPingPrimary);
             this.Controls.Add(this.cbAutomatic);
             this.Controls.Add(this.lblDNS);
             this.Controls.Add(this.cbDNSType);
@@ -167,7 +149,5 @@
         private System.Windows.Forms.ComboBox cbDNSType;
         private System.Windows.Forms.Label lblDNS;
         private System.Windows.Forms.CheckBox cbAutomatic;
-        private System.Windows.Forms.Button btnPingPrimary;
-        private System.Windows.Forms.Button btnPingSecondary;
     }
 }

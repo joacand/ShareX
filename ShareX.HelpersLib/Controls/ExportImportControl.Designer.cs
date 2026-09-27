@@ -1,4 +1,4 @@
-﻿namespace ShareX.HelpersLib
+namespace ShareX.HelpersLib
 {
     partial class ExportImportControl
     {
@@ -37,7 +37,6 @@
             this.cmsImport = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiImportClipboard = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiImportFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiImportURL = new System.Windows.Forms.ToolStripMenuItem();
             this.btnImport = new HelpersLib.MenuButton();
             this.btnExport = new HelpersLib.MenuButton();
             this.cmsExport.SuspendLayout();
@@ -76,9 +75,7 @@
             // 
             this.cmsImport.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiImportClipboard,
-            this.tsmiImportFile,
-            this.tsmiImportURL});
-            this.cmsImport.Name = "cmsImport";
+            this.tsmiImportFile});
             this.cmsImport.ShowImageMargin = false;
             resources.ApplyResources(this.cmsImport, "cmsImport");
             // 
@@ -93,12 +90,6 @@
             this.tsmiImportFile.Name = "tsmiImportFile";
             resources.ApplyResources(this.tsmiImportFile, "tsmiImportFile");
             this.tsmiImportFile.Click += new System.EventHandler(this.tsmiImportFile_Click);
-            // 
-            // tsmiImportURL
-            // 
-            this.tsmiImportURL.Name = "tsmiImportURL";
-            resources.ApplyResources(this.tsmiImportURL, "tsmiImportURL");
-            this.tsmiImportURL.Click += new System.EventHandler(this.tsmiImportURL_Click);
             // 
             // btnImport
             // 
@@ -138,6 +129,5 @@
         private MenuButton btnExport;
         private MenuButton btnImport;
         private System.Windows.Forms.ToolStripMenuItem tsmiExportUpload;
-        private System.Windows.Forms.ToolStripMenuItem tsmiImportURL;
     }
 }

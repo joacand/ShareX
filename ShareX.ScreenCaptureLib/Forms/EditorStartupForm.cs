@@ -1,4 +1,4 @@
-﻿#region License Information (GPL v3)
+#region License Information (GPL v3)
 
 /*
     ShareX - A program that allows you to take screenshots and share any file type
@@ -92,52 +92,6 @@ namespace ShareX.ScreenCaptureLib
             else
             {
                 MessageBox.Show(Resources.EditorStartupForm_ClipboardDoesNotContainAnImage, "ShareX", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        private async void btnLoadImageFromURL_Click(object sender, EventArgs e)
-        {
-            string inputText = null;
-
-            string text = ClipboardHelpers.GetText(true);
-
-            if (URLHelpers.IsValidURL(text))
-            {
-                inputText = text;
-            }
-
-            string url = InputBox.Show(Resources.ImageURL, inputText);
-
-            if (!string.IsNullOrEmpty(url))
-            {
-                btnOpenImageFile.Enabled = btnLoadImageFromClipboard.Enabled = btnLoadImageFromURL.Enabled = btnCreateNewImage.Enabled = false;
-                Cursor = Cursors.WaitCursor;
-
-                try
-                {
-                    Image = await WebHelpers.DownloadImageAsync(url);
-
-                    if (IsDisposed)
-                    {
-                        Image?.Dispose();
-
-                        return;
-                    }
-                    else if (Image != null)
-                    {
-                        DialogResult = DialogResult.OK;
-                        Close();
-
-                        return;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ex.ShowError();
-                }
-
-                Cursor = Cursors.Default;
-                btnOpenImageFile.Enabled = btnLoadImageFromClipboard.Enabled = btnLoadImageFromURL.Enabled = btnCreateNewImage.Enabled = true;
             }
         }
 

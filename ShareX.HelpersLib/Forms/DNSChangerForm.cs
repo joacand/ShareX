@@ -129,32 +129,6 @@ namespace ShareX.HelpersLib
             txtAlternateDNS.Enabled = !cbAutomatic.Checked && cbDNSType.SelectedIndex == 0;
         }
 
-        private async Task SendPing(string ip)
-        {
-            if (!string.IsNullOrEmpty(ip))
-            {
-                btnPingPrimary.Enabled = btnPingSecondary.Enabled = false;
-
-                await Task.Run(() =>
-                {
-                    PingResult pingResult = PingHelper.PingHost(ip);
-                    MessageBox.Show(pingResult.ToString(), "ShareX", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                });
-
-                btnPingPrimary.Enabled = btnPingSecondary.Enabled = true;
-            }
-        }
-
-        private async void btnPingPrimary_Click(object sender, EventArgs e)
-        {
-            await SendPing(txtPreferredDNS.Text);
-        }
-
-        private async void btnPingSecondary_Click(object sender, EventArgs e)
-        {
-            await SendPing(txtAlternateDNS.Text);
-        }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (cbAdapters.SelectedItem is AdapterInfo adapter)

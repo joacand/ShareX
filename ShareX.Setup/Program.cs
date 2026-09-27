@@ -67,7 +67,6 @@ namespace ShareX.Setup
 
         private static string SolutionPath => Path.Combine(ParentDir, "ShareX.sln");
         private static string BinDir => Path.Combine(ParentDir, "ShareX", "bin", Configuration);
-        private static string SteamLauncherDir => Path.Combine(ParentDir, "ShareX.Steam", "bin", Configuration);
         private static string ExecutablePath => Path.Combine(BinDir, "ShareX.exe");
 
         private static string OutputDir => Path.Combine(ParentDir, "Output");
@@ -139,9 +138,6 @@ namespace ShareX.Setup
 
             if (Job.HasFlag(SetupJobs.CreateSteamFolder))
             {
-                CreateSteamFolder();
-
-                CreateZipFile(SteamOutputDir, SteamZipPath);
             }
 
             if (Job.HasFlag(SetupJobs.CreateMicrosoftStoreFolder))
@@ -330,21 +326,6 @@ namespace ShareX.Setup
 
         private static void CreateSteamFolder()
         {
-            Console.WriteLine("Creating Steam folder: " + SteamOutputDir);
-
-            if (Directory.Exists(SteamOutputDir))
-            {
-                Directory.Delete(SteamOutputDir, true);
-            }
-
-            Directory.CreateDirectory(SteamOutputDir);
-
-            FileHelpers.CopyFiles(Path.Combine(SteamLauncherDir, "ShareX_Launcher.exe"), SteamOutputDir);
-            FileHelpers.CopyFiles(Path.Combine(SteamLauncherDir, "steam_appid.txt"), SteamOutputDir);
-            FileHelpers.CopyFiles(Path.Combine(SteamLauncherDir, "installscript.vdf"), SteamOutputDir);
-            FileHelpers.CopyFiles(SteamLauncherDir, SteamOutputDir, "*.dll");
-
-            CreateFolder(BinDir, SteamUpdatesDir, SetupJobs.CreateSteamFolder);
         }
 
         private static void CreateFolder(string source, string destination, SetupJobs job)
@@ -377,10 +358,6 @@ namespace ShareX.Setup
                 }
 
                 FileHelpers.CopyFiles(RecorderDevicesSetupPath, destination);
-
-                FileHelpers.CopyFiles(Path.Combine(source, "ShareX_NativeMessagingHost.exe"), destination);
-                FileHelpers.CopyFiles(Path.Combine(source, "host-manifest-chrome.json"), destination);
-                FileHelpers.CopyFiles(Path.Combine(source, "host-manifest-firefox.json"), destination);
             }
 
             foreach (string directory in Directory.GetDirectories(source))
@@ -428,10 +405,20 @@ namespace ShareX.Setup
                 string filePath = Path.Combine(OutputDir, fileName);
 
                 Console.WriteLine("Downloading: " + FFmpegDownloadURL);
-                WebHelpers.DownloadFileAsync(FFmpegDownloadURL, filePath).GetAwaiter().GetResult();
+                DownloadFileAsync(FFmpegDownloadURL, filePath).GetAwaiter().GetResult();
 
                 Console.WriteLine("Extracting: " + filePath);
                 ZipManager.Extract(filePath, OutputDir, false, entry => entry.Name.Equals("ffmpeg.exe", StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        private static async System.Threading.Tasks.Task DownloadFileAsync(string url, string filePath)
+        {
+            using (System.Net.Http.HttpClient client = new System.Net.Http.HttpClient())
+            using (System.IO.Stream stream = await client.GetStreamAsync(url))
+            using (System.IO.FileStream file = System.IO.File.Create(filePath))
+            {
+                await stream.CopyToAsync(file);
             }
         }
 
