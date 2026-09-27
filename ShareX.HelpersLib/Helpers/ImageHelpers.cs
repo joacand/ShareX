@@ -169,7 +169,7 @@ namespace ShareX.HelpersLib
             return bmpResult;
         }
 
-        public static Bitmap CreateThumbnail(Bitmap bmp, int width, int height)
+        public static Bitmap CreateThumbnail(Bitmap bmp, int width, int height, InterpolationMode interpolationMode = DefaultInterpolationMode)
         {
             double srcRatio = (double)bmp.Width / bmp.Height;
             double dstRatio = (double)width / height;
@@ -210,7 +210,12 @@ namespace ShareX.HelpersLib
 
             using (Graphics g = Graphics.FromImage(bmpResult))
             {
-                g.SetHighQuality();
+                g.InterpolationMode = interpolationMode;
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                g.CompositingQuality = CompositingQuality.HighQuality;
+                g.CompositingMode = CompositingMode.SourceOver;
+
                 g.DrawImage(bmp, new Rectangle(0, 0, width, height), new Rectangle(x, y, w, h), GraphicsUnit.Pixel);
             }
 

@@ -315,6 +315,7 @@ namespace ShareX.ScreenCaptureLib
         EffectBlur,
         EffectPixelate,
         EffectHighlight,
+        ToolSpotlight,
         ToolCrop,
         ToolCutOut
     }
@@ -370,5 +371,13 @@ namespace ShareX.ScreenCaptureLib
         Failed,
         PartiallySuccessful,
         Successful
+    }
+
+    public enum ScrollMethod // Localized
+    {
+        MouseWheel,
+        DownArrow,
+        PageDown,
+        ScrollMessage
     }
 }

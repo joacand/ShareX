@@ -35,9 +35,10 @@ namespace ShareX.ScreenCaptureLib
 {
     public sealed class RegionCaptureTransparentForm : LayeredForm
     {
-        private const int MinimumRectangleSize = 3;
+        private const int MinimumRectangleSize = 5;
 
         public static Rectangle LastSelectionRectangle0Based { get; private set; }
+        public static Rectangle LastScreenSelectionRectangle { get; private set; }
 
         public Rectangle ScreenRectangle { get; private set; }
         public Rectangle ScreenRectangle0Based => new Rectangle(0, 0, ScreenRectangle.Width, ScreenRectangle.Height);
@@ -141,6 +142,7 @@ namespace ShareX.ScreenCaptureLib
                 if (isMouseDown && SelectionRectangle0Based.Width > MinimumRectangleSize && SelectionRectangle0Based.Height > MinimumRectangleSize)
                 {
                     LastSelectionRectangle0Based = SelectionRectangle0Based;
+                    LastScreenSelectionRectangle = SelectionRectangle;
                     DialogResult = DialogResult.OK;
                     Close();
                 }

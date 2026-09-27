@@ -27,13 +27,18 @@ using ShareX.HelpersLib;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 
 namespace ShareX.ScreenCaptureLib
 {
     public class WindowsRectangleList
     {
-        public IntPtr IgnoreHandle { get; set; }
+        public List<IntPtr> IgnoreHandleList { get; set; } = new List<IntPtr>();
+        public List<string> IgnoreClassNameList { get; set; } = new List<string>()
+        {
+            "CEF-OSC-WIDGET" // NVIDIA GeForce Overlay DT
+        };
         public bool IncludeChildWindows { get; set; }
         public int Timeout { get; set; }
 
@@ -54,8 +59,12 @@ namespace ShareX.ScreenCaptureLib
                     cts.CancelAfter(Timeout);
                 }
 
-                EnumWindowsProc ewp = EvalWindow;
-                NativeMethods.EnumWindows(ewp, IntPtr.Zero);
+                bool EvalWindow(IntPtr hWnd, IntPtr _)
+                {
+                    return CheckHandle(hWnd, null);
+                }
+
+                NativeMethods.EnumWindows(EvalWindow, IntPtr.Zero);
             }
             catch
             {
@@ -92,41 +101,71 @@ namespace ShareX.ScreenCaptureLib
             return result;
         }
 
-        private bool EvalWindow(IntPtr hWnd, IntPtr lParam)
+        private bool CheckHandle(IntPtr handle, Rectangle? clipRect)
         {
-            return CheckHandle(hWnd, true);
-        }
+            // If we are asked to clip against our parent we are not a window
+            bool isWindow = clipRect == null;
 
-        private bool EvalControl(IntPtr hWnd, IntPtr lParam)
-        {
-            return CheckHandle(hWnd, false);
-        }
-
-        private bool CheckHandle(IntPtr handle, bool isWindow)
-        {
             if (cts != null && cts.IsCancellationRequested)
             {
                 return false;
             }
 
-            if (handle == IgnoreHandle || !NativeMethods.IsWindowVisible(handle) || (isWindow && NativeMethods.IsWindowCloaked(handle)))
+            if (IgnoreHandleList.Contains(handle))
             {
                 return true;
             }
 
-            SimpleWindowInfo windowInfo = new SimpleWindowInfo(handle);
+            WindowInfo windowInfo = new WindowInfo(handle);
+
+            if (!windowInfo.IsVisible)
+            {
+                return true;
+            }
 
             if (isWindow)
             {
-                windowInfo.IsWindow = true;
-                windowInfo.Rectangle = CaptureHelpers.GetWindowRectangle(handle);
+                if (windowInfo.IsCloaked)
+                {
+                    return true;
+                }
+
+                string className = windowInfo.ClassName;
+
+                if (!string.IsNullOrEmpty(className) &&
+                    IgnoreClassNameList.Any(ignore => className.Equals(ignore, StringComparison.OrdinalIgnoreCase)))
+                {
+                    return true;
+                }
+
+                WindowStyles exStyle = windowInfo.ExStyle;
+
+                // Skip non-activatable tool windows (tiling manager overlays, system
+                // auxiliaries, etc.). These are never the "real" application the user
+                // intends to capture, and including them causes screenshot metadata
+                // (filename, window title) to reflect the overlay instead of the app
+                // underneath.
+                if (exStyle.HasFlag(WindowStyles.WS_EX_TOOLWINDOW, WindowStyles.WS_EX_NOACTIVATE))
+                {
+                    return true;
+                }
+            }
+
+            SimpleWindowInfo simpleWindowInfo = new SimpleWindowInfo(handle);
+
+            if (isWindow)
+            {
+                simpleWindowInfo.IsWindow = true;
+                simpleWindowInfo.Rectangle = CaptureHelpers.GetWindowRectangle(handle);
             }
             else
             {
-                windowInfo.Rectangle = NativeMethods.GetWindowRect(handle);
+                Rectangle rect = NativeMethods.GetWindowRect(handle);
+                // A window can be physically bigger than its parent, but not visually
+                simpleWindowInfo.Rectangle = Rectangle.Intersect(rect, clipRect.Value);
             }
 
-            if (!windowInfo.Rectangle.IsValid())
+            if (!simpleWindowInfo.Rectangle.IsValid())
             {
                 return true;
             }
@@ -135,21 +174,25 @@ namespace ShareX.ScreenCaptureLib
             {
                 parentHandles.Add(handle);
 
-                EnumWindowsProc ewp = EvalControl;
-                NativeMethods.EnumChildWindows(handle, ewp, IntPtr.Zero);
+                bool EvalControl(IntPtr hWnd, IntPtr _)
+                {
+                    return CheckHandle(hWnd, simpleWindowInfo.Rectangle);
+                }
+
+                NativeMethods.EnumChildWindows(handle, EvalControl, IntPtr.Zero);
             }
 
             if (isWindow)
             {
                 Rectangle clientRect = NativeMethods.GetClientRect(handle);
 
-                if (clientRect.IsValid() && clientRect != windowInfo.Rectangle)
+                if (clientRect.IsValid() && clientRect != simpleWindowInfo.Rectangle)
                 {
                     windows.Add(new SimpleWindowInfo(handle, clientRect));
                 }
             }
 
-            windows.Add(windowInfo);
+            windows.Add(simpleWindowInfo);
 
             return true;
         }

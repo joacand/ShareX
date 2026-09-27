@@ -51,7 +51,7 @@ namespace ShareX.ScreenCaptureLib
         public bool DetectControls = true;
         // TEMP: For backward compatibility
         public bool UseDimming = true;
-        public int BackgroundDimStrength = 10;
+        public int BackgroundDimStrength = 20;
         public bool UseCustomInfoText = false;
         public string CustomInfoText = "X: $x, Y: $y$nR: $r, G: $g, B: $b$nHex: $hex"; // Formats: $x, $y, $r, $g, $b, $hex, $HEX, $n
         public List<SnapSize> SnapSizes = new List<SnapSize>()
@@ -67,6 +67,7 @@ namespace ShareX.ScreenCaptureLib
         public bool UseSquareMagnifier = false;
         public int MagnifierPixelCount = 15; // Must be odd number like 11, 13, 15 etc.
         public int MagnifierPixelSize = 10;
+        public bool ShowCenterCrosshair = false;
         public bool ShowCrosshair = false;
         public bool UseLightResizeNodes = false;
         public bool EnableAnimations = true;

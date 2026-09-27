@@ -1053,6 +1053,18 @@ Would you like to download and install it?</value>
   <data name="StepType_RomanNumeralsUppercase" xml:space="preserve">
     <value>Roman numerals (Uppercase)</value>
   </data>
+  <data name="ScrollMethod_MouseWheel" xml:space="preserve">
+    <value>Mouse wheel</value>
+  </data>
+  <data name="ScrollMethod_DownArrow" xml:space="preserve">
+    <value>Down arrow</value>
+  </data>
+  <data name="ScrollMethod_PageDown" xml:space="preserve">
+    <value>Page down</value>
+  </data>
+  <data name="ScrollMethod_ScrollMessage" xml:space="preserve">
+    <value>Scroll message</value>
+  </data>
   <data name="HotkeyType_ClipboardViewer" xml:space="preserve">
     <value>Clipboard viewer</value>
   </data>
@@ -1241,6 +1253,9 @@ Would you like to download and install it?</value>
   </data>
   <data name="ShapeType_ToolCutOut" xml:space="preserve">
     <value>Cut out (X)</value>
+  </data>
+  <data name="ShapeType_ToolSpotlight" xml:space="preserve">
+    <value>Spotlight</value>
   </data>
   <data name="HotkeyType_PinToScreenFromClipboard" xml:space="preserve">
     <value>Pin to screen (From clipboard)</value>

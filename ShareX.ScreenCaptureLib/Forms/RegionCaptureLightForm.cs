@@ -1,4 +1,4 @@
-﻿#region License Information (GPL v3)
+#region License Information (GPL v3)
 
 /*
     ShareX - A program that allows you to take screenshots and share any file type
@@ -26,7 +26,6 @@
 using ShareX.HelpersLib;
 using ShareX.ScreenCaptureLib.Properties;
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -35,32 +34,27 @@ namespace ShareX.ScreenCaptureLib
 {
     public sealed class RegionCaptureLightForm : Form
     {
-        private const int MinimumRectangleSize = 3;
+        private const int MinimumRectangleSize = 5;
 
-        public static Rectangle LastSelectionRectangle0Based { get; private set; }
+        public static Rectangle LastSelectionRectangle { get; private set; }
+        public static Rectangle LastScreenSelectionRectangle { get; private set; }
 
         public Rectangle ScreenRectangle { get; private set; }
-        public Rectangle ScreenRectangle0Based => new Rectangle(0, 0, ScreenRectangle.Width, ScreenRectangle.Height);
         public Rectangle SelectionRectangle { get; private set; }
-        public Rectangle SelectionRectangle0Based => new Rectangle(SelectionRectangle.X - ScreenRectangle.X, SelectionRectangle.Y - ScreenRectangle.Y,
-            SelectionRectangle.Width, SelectionRectangle.Height);
 
-        private Timer timer;
         private Bitmap backgroundImage;
         private TextureBrush backgroundBrush;
         private Pen borderDotPen, borderDotPen2;
-        private Point currentPosition, positionOnClick;
+        private Point positionOnClick;
         private bool isMouseDown;
-        private Stopwatch penTimer;
 
-        public RegionCaptureLightForm(Bitmap canvas, bool activeMonitorMode = false)
+        public RegionCaptureLightForm(Bitmap background, bool activeMonitorMode = false)
         {
-            backgroundImage = canvas;
+            backgroundImage = background;
             backgroundBrush = new TextureBrush(backgroundImage);
-            borderDotPen = new Pen(Color.Black, 1);
-            borderDotPen2 = new Pen(Color.White, 1);
+            borderDotPen = new Pen(Color.White, 1);
+            borderDotPen2 = new Pen(Color.Black, 1);
             borderDotPen2.DashPattern = new float[] { 5, 5 };
-            penTimer = Stopwatch.StartNew();
 
             if (activeMonitorMode)
             {
@@ -74,23 +68,6 @@ namespace ShareX.ScreenCaptureLib
             }
 
             InitializeComponent();
-            Icon = ShareXResources.Icon;
-            Cursor = Helpers.CreateCursor(Resources.Crosshair);
-
-            timer = new Timer { Interval = 10 };
-            timer.Tick += timer_Tick;
-            timer.Start();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (timer != null) timer.Dispose();
-            if (backgroundImage != null) backgroundImage.Dispose();
-            if (backgroundBrush != null) backgroundBrush.Dispose();
-            if (borderDotPen != null) borderDotPen.Dispose();
-            if (borderDotPen2 != null) borderDotPen2.Dispose();
-
-            base.Dispose(disposing);
         }
 
         private void InitializeComponent()
@@ -108,70 +85,31 @@ namespace ShareX.ScreenCaptureLib
             TopMost = true;
 #endif
 
-            Shown += RectangleLight_Shown;
-            KeyUp += RectangleLight_KeyUp;
-            MouseDown += RectangleLight_MouseDown;
-            MouseUp += RectangleLight_MouseUp;
+            Shown += RegionCaptureLightForm_Shown;
+            KeyUp += RegionCaptureLightForm_KeyUp;
+            MouseDown += RegionCaptureLightForm_MouseDown;
+            MouseUp += RegionCaptureLightForm_MouseUp;
+            MouseMove += RegionCaptureLightForm_MouseMove;
 
             ResumeLayout(false);
+
+            Icon = ShareXResources.Icon;
+            Cursor = Helpers.CreateCursor(Resources.Crosshair);
         }
 
-        private void RectangleLight_Shown(object sender, EventArgs e)
+        protected override void Dispose(bool disposing)
         {
-            this.ForceActivate();
-        }
+            backgroundImage?.Dispose();
+            backgroundBrush?.Dispose();
+            borderDotPen?.Dispose();
+            borderDotPen2?.Dispose();
 
-        private void RectangleLight_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                DialogResult = DialogResult.Cancel;
-                Close();
-            }
-        }
-
-        private void RectangleLight_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                positionOnClick = CaptureHelpers.GetCursorPosition();
-                isMouseDown = true;
-            }
-        }
-
-        private void RectangleLight_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                if (isMouseDown && SelectionRectangle0Based.Width > MinimumRectangleSize && SelectionRectangle0Based.Height > MinimumRectangleSize)
-                {
-                    LastSelectionRectangle0Based = SelectionRectangle0Based;
-                    DialogResult = DialogResult.OK;
-                    Close();
-                }
-                else
-                {
-                    isMouseDown = false;
-                }
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                if (isMouseDown)
-                {
-                    isMouseDown = false;
-                    Refresh();
-                }
-                else
-                {
-                    DialogResult = DialogResult.Cancel;
-                    Close();
-                }
-            }
+            base.Dispose(disposing);
         }
 
         public Bitmap GetAreaImage()
         {
-            Rectangle rect = SelectionRectangle0Based;
+            Rectangle rect = SelectionRectangle;
 
             if (rect.Width > 0 && rect.Height > 0)
             {
@@ -186,12 +124,74 @@ namespace ShareX.ScreenCaptureLib
             return null;
         }
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void DrawDottedRectangle(Graphics g, Pen pen1, Pen pen2, Rectangle rect)
         {
-            currentPosition = CaptureHelpers.GetCursorPosition();
-            SelectionRectangle = CaptureHelpers.CreateRectangle(positionOnClick.X, positionOnClick.Y, currentPosition.X, currentPosition.Y);
+            g.DrawRectangleProper(pen1, rect);
+            g.DrawLine(pen2, rect.X, rect.Y, rect.Right - 1, rect.Y);
+            g.DrawLine(pen2, rect.X, rect.Y, rect.X, rect.Bottom - 1);
+            g.DrawLine(pen2, rect.Right - 1, rect.Y, rect.Right - 1, rect.Bottom - 1);
+            g.DrawLine(pen2, rect.X, rect.Bottom - 1, rect.Right - 1, rect.Bottom - 1);
+        }
 
-            Refresh();
+        private void RegionCaptureLightForm_Shown(object sender, EventArgs e)
+        {
+            this.ForceActivate();
+        }
+
+        private void RegionCaptureLightForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                DialogResult = DialogResult.Cancel;
+                Close();
+            }
+        }
+
+        private void RegionCaptureLightForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                positionOnClick = e.Location;
+                isMouseDown = true;
+            }
+        }
+
+        private void RegionCaptureLightForm_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (isMouseDown && SelectionRectangle.Width > MinimumRectangleSize && SelectionRectangle.Height > MinimumRectangleSize)
+                {
+                    LastSelectionRectangle = SelectionRectangle;
+                    LastScreenSelectionRectangle = new Rectangle(SelectionRectangle.X + ScreenRectangle.X,
+                        SelectionRectangle.Y + ScreenRectangle.Y, SelectionRectangle.Width, SelectionRectangle.Height);
+                    DialogResult = DialogResult.OK;
+                    Close();
+                }
+                else
+                {
+                    isMouseDown = false;
+                }
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                if (isMouseDown)
+                {
+                    isMouseDown = false;
+                    Invalidate();
+                }
+                else
+                {
+                    DialogResult = DialogResult.Cancel;
+                    Close();
+                }
+            }
+        }
+
+        private void RegionCaptureLightForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            SelectionRectangle = CaptureHelpers.CreateRectangle(positionOnClick.X, positionOnClick.Y, e.X, e.Y);
+            Invalidate();
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -206,14 +206,11 @@ namespace ShareX.ScreenCaptureLib
             g.SmoothingMode = SmoothingMode.HighSpeed;
             g.CompositingMode = CompositingMode.SourceCopy;
             g.CompositingQuality = CompositingQuality.HighSpeed;
-            g.FillRectangle(backgroundBrush, ScreenRectangle0Based);
+            g.FillRectangle(backgroundBrush, 0, 0, ScreenRectangle.Width, ScreenRectangle.Height);
 
-            if (isMouseDown && SelectionRectangle0Based.Width > MinimumRectangleSize && SelectionRectangle0Based.Height > MinimumRectangleSize)
+            if (isMouseDown && SelectionRectangle.Width > MinimumRectangleSize && SelectionRectangle.Height > MinimumRectangleSize)
             {
-                borderDotPen2.DashOffset = (float)penTimer.Elapsed.TotalSeconds * -15;
-
-                g.DrawRectangleProper(borderDotPen, SelectionRectangle0Based);
-                g.DrawRectangleProper(borderDotPen2, SelectionRectangle0Based);
+                DrawDottedRectangle(g, borderDotPen, borderDotPen2, SelectionRectangle);
             }
         }
     }

@@ -199,6 +199,7 @@ namespace ShareX
             nudCaptureShadowOffset.SetValue(TaskSettings.CaptureSettings.CaptureShadowOffset);
             cbCaptureClientArea.Checked = TaskSettings.CaptureSettings.CaptureClientArea;
             cbCaptureAutoHideTaskbar.Checked = TaskSettings.CaptureSettings.CaptureAutoHideTaskbar;
+            cbCaptureAutoHideDesktopIcons.Checked = TaskSettings.CaptureSettings.CaptureAutoHideDesktopIcons;
             nudCaptureCustomRegionX.SetValue(TaskSettings.CaptureSettings.CaptureCustomRegion.X);
             nudCaptureCustomRegionY.SetValue(TaskSettings.CaptureSettings.CaptureCustomRegion.Y);
             nudCaptureCustomRegionWidth.SetValue(TaskSettings.CaptureSettings.CaptureCustomRegion.Width);
@@ -888,6 +889,11 @@ namespace ShareX
         private void cbCaptureAutoHideTaskbar_CheckedChanged(object sender, EventArgs e)
         {
             TaskSettings.CaptureSettings.CaptureAutoHideTaskbar = cbCaptureAutoHideTaskbar.Checked;
+        }
+
+        private void cbCaptureAutoHideDesktopIcons_CheckedChanged(object sender, EventArgs e)
+        {
+            TaskSettings.CaptureSettings.CaptureAutoHideDesktopIcons = cbCaptureAutoHideDesktopIcons.Checked;
         }
 
         private void nudScreenRegionX_ValueChanged(object sender, EventArgs e)

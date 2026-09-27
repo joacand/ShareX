@@ -144,6 +144,7 @@ namespace ShareX
             this.lblCaptureShadowOffset = new System.Windows.Forms.Label();
             this.cbCaptureTransparent = new System.Windows.Forms.CheckBox();
             this.cbCaptureAutoHideTaskbar = new System.Windows.Forms.CheckBox();
+            this.cbCaptureAutoHideDesktopIcons = new System.Windows.Forms.CheckBox();
             this.cbCaptureShadow = new System.Windows.Forms.CheckBox();
             this.lblScreenshotDelayInfo = new System.Windows.Forms.Label();
             this.cbCaptureClientArea = new System.Windows.Forms.CheckBox();
@@ -1137,6 +1138,7 @@ namespace ShareX
             this.pCapture.Controls.Add(this.lblCaptureShadowOffset);
             this.pCapture.Controls.Add(this.cbCaptureTransparent);
             this.pCapture.Controls.Add(this.cbCaptureAutoHideTaskbar);
+            this.pCapture.Controls.Add(this.cbCaptureAutoHideDesktopIcons);
             this.pCapture.Controls.Add(this.cbCaptureShadow);
             this.pCapture.Controls.Add(this.lblScreenshotDelayInfo);
             this.pCapture.Controls.Add(this.cbCaptureClientArea);
@@ -1282,6 +1284,13 @@ namespace ShareX
             this.cbCaptureAutoHideTaskbar.Name = "cbCaptureAutoHideTaskbar";
             this.cbCaptureAutoHideTaskbar.UseVisualStyleBackColor = true;
             this.cbCaptureAutoHideTaskbar.CheckedChanged += new System.EventHandler(this.cbCaptureAutoHideTaskbar_CheckedChanged);
+            // 
+            // cbCaptureAutoHideDesktopIcons
+            // 
+            resources.ApplyResources(this.cbCaptureAutoHideDesktopIcons, "cbCaptureAutoHideDesktopIcons");
+            this.cbCaptureAutoHideDesktopIcons.Name = "cbCaptureAutoHideDesktopIcons";
+            this.cbCaptureAutoHideDesktopIcons.UseVisualStyleBackColor = true;
+            this.cbCaptureAutoHideDesktopIcons.CheckedChanged += new System.EventHandler(this.cbCaptureAutoHideDesktopIcons_CheckedChanged);
             // 
             // cbCaptureShadow
             // 
@@ -2568,6 +2577,7 @@ namespace ShareX
         private System.Windows.Forms.TabControl tcCapture;
         private System.Windows.Forms.TabPage tpCaptureGeneral;
         private System.Windows.Forms.CheckBox cbCaptureAutoHideTaskbar;
+        private System.Windows.Forms.CheckBox cbCaptureAutoHideDesktopIcons;
         private System.Windows.Forms.Label lblScreenshotDelayInfo;
         private System.Windows.Forms.NumericUpDown nudScreenshotDelay;
         private System.Windows.Forms.NumericUpDown nudCaptureShadowOffset;

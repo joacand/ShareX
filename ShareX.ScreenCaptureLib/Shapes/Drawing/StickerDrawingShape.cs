@@ -73,7 +73,24 @@ namespace ShareX.ScreenCaptureLib
 
         public override void Resize(int x, int y, bool fromBottomRight)
         {
-            Move(x, y);
+            PointF center = new PointF(Rectangle.X + (Rectangle.Width / 2f), Rectangle.Y + (Rectangle.Height / 2f));
+
+            if (x != 0)
+            {
+                Image.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            }
+
+            if (y != 0)
+            {
+                Image.RotateFlip(RotateFlipType.RotateNoneFlipY);
+            }
+
+            using (Bitmap flippedBmp = (Bitmap)Image.Clone())
+            {
+                SetImage(flippedBmp, true);
+                Rectangle = new RectangleF(center.X - (flippedBmp.Width / 2f), center.Y - (flippedBmp.Height / 2f),
+                    flippedBmp.Width, flippedBmp.Height);
+            }
         }
 
         private bool OpenStickerForm()
@@ -84,7 +101,7 @@ namespace ShareX.ScreenCaptureLib
             {
                 using (StickerForm stickerForm = new StickerForm(AnnotationOptions.StickerPacks, AnnotationOptions.SelectedStickerPack, AnnotationOptions.StickerSize))
                 {
-                    if (stickerForm.ShowDialog(Manager.Form) == DialogResult.OK)
+                    if (stickerForm.ShowDialogTopMost(Manager.Form) == DialogResult.OK)
                     {
                         AnnotationOptions.SelectedStickerPack = stickerForm.SelectedStickerPack;
                         AnnotationOptions.StickerSize = stickerForm.StickerSize;

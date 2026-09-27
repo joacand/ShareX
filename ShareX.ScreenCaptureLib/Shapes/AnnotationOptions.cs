@@ -49,6 +49,10 @@ namespace ShareX.ScreenCaptureLib
         public Color ShadowColor { get; set; } = Color.FromArgb(125, 0, 0, 0);
         public Point ShadowOffset { get; set; } = new Point(0, 1);
 
+        // Freehand drawing
+        public int FreehandSmoothing { get; set; } = 0;
+        public bool FreehandCurveInterpolation { get; set; } = true;
+
         // Line, arrow drawing
         public int LineCenterPointCount { get; set; } = 1;
 
@@ -106,6 +110,11 @@ namespace ShareX.ScreenCaptureLib
 
         // Highlight effect
         public Color HighlightColor { get; set; } = Color.Yellow;
+
+        // Spotlight tool
+        public int SpotlightDim { get; set; } = 30;
+        public int SpotlightBlur { get; set; } = 10;
+        public bool SpotlightEllipse { get; set; } = false;
 
         // Cut out tool
         public CutOutEffectType CutOutEffectType { get; set; } = CutOutEffectType.None;

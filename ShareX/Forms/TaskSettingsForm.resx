@@ -3204,6 +3204,33 @@
   <data name="&gt;&gt;cbCaptureTransparent.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
+  <data name="cbCaptureAutoHideDesktopIcons.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbCaptureAutoHideDesktopIcons.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbCaptureAutoHideDesktopIcons.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 200</value>
+  </data>
+  <data name="cbCaptureAutoHideDesktopIcons.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 17</value>
+  </data>
+  <data name="cbCaptureAutoHideDesktopIcons.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="cbCaptureAutoHideDesktopIcons.Text" xml:space="preserve">
+    <value>Automatically hide desktop icons</value>
+  </data>
+  <data name="&gt;&gt;cbCaptureAutoHideDesktopIcons.Name" xml:space="preserve">
+    <value>cbCaptureAutoHideDesktopIcons</value>
+  </data>
+  <data name="&gt;&gt;cbCaptureAutoHideDesktopIcons.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbCaptureAutoHideDesktopIcons.Parent" xml:space="preserve">
+    <value>pCapture</value>
+  </data>
   <data name="cbCaptureAutoHideTaskbar.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -3211,13 +3238,13 @@
     <value>NoControl</value>
   </data>
   <data name="cbCaptureAutoHideTaskbar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 200</value>
+    <value>8, 224</value>
   </data>
   <data name="cbCaptureAutoHideTaskbar.Size" type="System.Drawing.Size, System.Drawing">
     <value>402, 17</value>
   </data>
   <data name="cbCaptureAutoHideTaskbar.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="cbCaptureAutoHideTaskbar.Text" xml:space="preserve">
     <value>When doing window capture if window intersects with taskbar then hide taskbar</value>

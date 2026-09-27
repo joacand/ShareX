@@ -157,6 +157,24 @@ namespace ShareX.ScreenCaptureLib.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dim:.
+        /// </summary>
+        internal static string ShapeManager_CreateToolbar_SpotlightDim {
+            get {
+                return ResourceManager.GetString("ShapeManager_CreateToolbar_SpotlightDim", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blur:.
+        /// </summary>
+        internal static string ShapeManager_CreateToolbar_SpotlightBlur {
+            get {
+                return ResourceManager.GetString("ShapeManager_CreateToolbar_SpotlightBlur", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap camcorder__pencil {
@@ -1586,6 +1604,24 @@ namespace ShareX.ScreenCaptureLib.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Smoothing:.
+        /// </summary>
+        internal static string ShapeManager_FreehandSmoothing {
+            get {
+                return ResourceManager.GetString("ShapeManager_FreehandSmoothing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Curve interpolation.
+        /// </summary>
+        internal static string ShapeManager_FreehandCurveInterpolation {
+            get {
+                return ResourceManager.GetString("ShapeManager_FreehandCurveInterpolation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Border style:.
         /// </summary>
         internal static string ShapeManager_BorderStyle {
@@ -1789,6 +1825,15 @@ namespace ShareX.ScreenCaptureLib.Properties {
         internal static string ShapeManager_CreateContextMenu_Show_magnifier {
             get {
                 return ResourceManager.GetString("ShapeManager_CreateContextMenu_Show_magnifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show center crosshair.
+        /// </summary>
+        internal static string ShapeManager_CreateContextMenu_Show_center_crosshair {
+            get {
+                return ResourceManager.GetString("ShapeManager_CreateContextMenu_Show_center_crosshair", resourceCulture);
             }
         }
         
@@ -2352,6 +2397,16 @@ namespace ShareX.ScreenCaptureLib.Properties {
         internal static System.Drawing.Bitmap wrench_screwdriver {
             get {
                 object obj = ResourceManager.GetObject("wrench_screwdriver", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap flashlight_shine {
+            get {
+                object obj = ResourceManager.GetObject("flashlight_shine", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

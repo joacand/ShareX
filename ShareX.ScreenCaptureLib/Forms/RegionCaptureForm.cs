@@ -222,6 +222,9 @@ namespace ShareX.ScreenCaptureLib
             {
                 FormBorderStyle = FormBorderStyle.Sizable;
                 MinimumSize = new Size(800, 550);
+#if !DEBUG
+                TopMost = true;
+#endif
 
                 if (Options.ImageEditorStartMode == ImageEditorStartMode.PreviousState)
                 {
@@ -335,12 +338,10 @@ namespace ShareX.ScreenCaptureLib
 
                 Task.Run(() =>
                 {
-                    WindowsRectangleList wla = new WindowsRectangleList()
-                    {
-                        IgnoreHandle = handle,
-                        IncludeChildWindows = ShapeManager.IncludeControls,
-                        Timeout = 5000
-                    };
+                    WindowsRectangleList wla = new WindowsRectangleList();
+                    wla.IgnoreHandleList.Add(handle);
+                    wla.IncludeChildWindows = ShapeManager.IncludeControls;
+                    wla.Timeout = 5000;
 
                     ShapeManager.Windows = wla.GetWindowInfoList();
                 });
@@ -1045,6 +1046,12 @@ namespace ShareX.ScreenCaptureLib
                     g.DrawCross(borderPen, ShapeManager.CurrentRectangle.Center(), 10);
                 }
 
+                if (Options.ShowCenterCrosshair)
+                {
+                    g.DrawCross(Pens.Black, ShapeManager.CurrentRectangle.Center().Add(-1, -1), 10);
+                    g.DrawCross(Pens.White, ShapeManager.CurrentRectangle.Center(), 10);
+                }
+
                 DrawRegionArea(g, ShapeManager.CurrentRectangle, true);
             }
 
@@ -1106,6 +1113,20 @@ namespace ShareX.ScreenCaptureLib
             else
             {
                 g.DrawRectangleProper(borderDotStaticPen, rect);
+            }
+        }
+
+        internal void DrawRegionAreaEllipse(Graphics g, RectangleF rect, bool isAnimated)
+        {
+            g.DrawEllipse(borderPen, rect);
+
+            if (isAnimated)
+            {
+                g.DrawEllipse(borderDotPen, rect);
+            }
+            else
+            {
+                g.DrawEllipse(borderDotStaticPen, rect);
             }
         }
 
@@ -1599,12 +1620,13 @@ namespace ShareX.ScreenCaptureLib
             {
                 if (ShapeManager.IsCurrentShapeValid)
                 {
-                    rect = CaptureHelpers.ClientToScreen(ShapeManager.CurrentRectangle.Round());
+                    rect = ShapeManager.CurrentRectangle.Round();
+                    rect.Offset(ScreenBounds.Location);
                 }
             }
             else if (Result == RegionResult.Fullscreen)
             {
-                rect = CaptureHelpers.GetScreenBounds();
+                rect = ScreenBounds;
             }
             else if (Result == RegionResult.Monitor)
             {

@@ -3210,6 +3210,15 @@ namespace ShareX.HelpersLib.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spotlight.
+        /// </summary>
+        internal static string ShapeType_ToolSpotlight {
+            get {
+                return ResourceManager.GetString("ShapeType_ToolSpotlight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select and move (M).
         /// </summary>
         internal static string ShapeType_ToolSelect {
@@ -3299,6 +3308,42 @@ namespace ShareX.HelpersLib.Properties {
         internal static string StepType_RomanNumeralsUppercase {
             get {
                 return ResourceManager.GetString("StepType_RomanNumeralsUppercase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mouse wheel.
+        /// </summary>
+        internal static string ScrollMethod_MouseWheel {
+            get {
+                return ResourceManager.GetString("ScrollMethod_MouseWheel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Down arrow.
+        /// </summary>
+        internal static string ScrollMethod_DownArrow {
+            get {
+                return ResourceManager.GetString("ScrollMethod_DownArrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page down.
+        /// </summary>
+        internal static string ScrollMethod_PageDown {
+            get {
+                return ResourceManager.GetString("ScrollMethod_PageDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scroll message.
+        /// </summary>
+        internal static string ScrollMethod_ScrollMessage {
+            get {
+                return ResourceManager.GetString("ScrollMethod_ScrollMessage", resourceCulture);
             }
         }
         
